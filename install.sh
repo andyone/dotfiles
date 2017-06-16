@@ -18,8 +18,29 @@ main() {
 }
 
 check() {
+  local has_errors
+
   if [[ ! -e $HOME/.oh-my-zsh ]] ; then
     echo "oh-my-zsh is reqired"
+    has_errors=true
+  fi
+
+  if isAppInstalled "zsh" ; then
+    echo "zsh is reqired"
+    has_errors=true
+  fi
+
+  if isAppInstalled "tmux" ; then
+    echo "tmux is reqired"
+    has_errors=true
+  fi
+
+  if isAppInstalled "git" ; then
+    echo "git is reqired"
+    has_errors=true
+  fi
+
+  if [[ $has_errors ]] ; then
     exit 1
   fi
 }
@@ -71,6 +92,15 @@ download() {
   local dir="$2"
 
   curl -s "$REPOSITORY/$name" -o "$dir/$name"
+}
+
+isAppInstalled () {
+  for app in "$@" ; do
+    type -P "$app" &> /dev/null
+    [[ $? -eq 1 ]] && return 1
+  done
+
+  return 0
 }
 
 ################################################################################
