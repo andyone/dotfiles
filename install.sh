@@ -25,17 +25,17 @@ check() {
     has_errors=true
   fi
 
-  if isAppInstalled "zsh" ; then
+  if ! isAppInstalled "zsh" ; then
     echo "zsh is reqired"
     has_errors=true
   fi
 
-  if isAppInstalled "tmux" ; then
+  if ! isAppInstalled "tmux" ; then
     echo "tmux is reqired"
     has_errors=true
   fi
 
-  if isAppInstalled "git" ; then
+  if ! isAppInstalled "git" ; then
     echo "git is reqired"
     has_errors=true
   fi
