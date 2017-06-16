@@ -53,8 +53,11 @@ doBackup() {
   fi
 
   local ts=$(date '+%Y%m%d%H%M%S')
+  local output="$HOME/.andyone-term-${ts}.tar.bz2"
 
-  tar cjf $HOME/.andyone-term-${ts}.tar.bz2 $file_list &> /dev/null
+  tar cjf "$output" $file_list &> /dev/null
+
+  echo "Backup created as $output"
 }
 
 doInstall() {
