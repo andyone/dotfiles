@@ -12,8 +12,16 @@ theme=("kaos-lite.zsh-theme" "kaos.zsh-theme")
 ################################################################################
 
 main() {
+  check
   doBackup
   doInstall
+}
+
+check() {
+  if [[ ! -e $HOME/.oh-my-zsh ]] ; then
+    echo "oh-my-zsh is reqired"
+    exit 1
+  fi
 }
 
 doBackup() {
@@ -33,12 +41,10 @@ doInstall() {
 
   printf "Installing "
 
-  if [[ -e $HOME/.oh-my-zsh ]] ; then
-    for file in ${theme[@]} ; do
-      download "$file" "$HOME/.oh-my-zsh/themes"
-      printf "."
-    done
-  fi
+  for file in ${theme[@]} ; do
+    download "$file" "$HOME/.oh-my-zsh/themes"
+    printf "."
+  done
 
   for file in ${files[@]} ; do
     download "$file" "$HOME"
