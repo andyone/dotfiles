@@ -1,0 +1,43 @@
+[core]
+ excludesfile = ~/.gitignore
+ pager = less -x1,5
+
+[color]
+ diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+
+[diff]
+  renamelimit = 0
+
+[merge]
+  summary = true
+
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  df = diff
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+[gitflow "branch"]
+  master = master
+  develop = develop
+
+[gitflow "prefix"]
+  feature = feature-
+  release = release-
+  hotfix = hotfix-
+  support = support-
+  versiontag =
+
+[http "https://pkg.re"]
+  followRedirects = true
+
+[http "https://gopkg.in"]
+  followRedirects = true      
+
+[include]
+  path = .gitconfig.local
