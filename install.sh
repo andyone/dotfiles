@@ -66,7 +66,7 @@ doInstall() {
   printf "Installing "
 
   for file in ${theme[@]} ; do
-    download "$file" "$HOME/.oh-my-zsh/themes"
+    download "themes/$file" "$HOME/.oh-my-zsh"
     printf "."
   done
 
