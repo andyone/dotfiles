@@ -36,6 +36,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias g="grep --color=auto"
 alias hf="history | grep"
+alias trf="terrafarm"
 alias tx="tmux attach 2>/dev/null || tmux new"
 alias txc="tmux_win_rename"
 alias git="git_trap"
