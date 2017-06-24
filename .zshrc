@@ -35,7 +35,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias g="grep --color=auto"
-alias hf="history | grep"
+alias hf="history_find"
 alias trf="terrafarm"
 alias tx="tmux attach 2>/dev/null || tmux new"
 alias txc="tmux_win_rename"
@@ -93,6 +93,15 @@ function git_release {
   /usr/bin/git checkout develop
 
   [[ $? -ne 0 ]] && return 1
+}
+
+function history_find {
+  if [[ $# -eq 0 ]] ; then
+    echo "usage: hf <string>"
+    return 0
+  fi
+
+  history | grep --color=always $@ | cut -f4-99 -d" "
 }
 
 ################################################################################
