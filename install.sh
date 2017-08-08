@@ -90,7 +90,7 @@ doBackup() {
 
   tar cjf "$output" $file_list &> /dev/null
 
-  show "Backup created as $output" $GREY
+  show "Backup created as $output" $DARK
 }
 
 doInstall() {
@@ -100,12 +100,12 @@ doInstall() {
 
   for file in ${theme[@]} ; do
     download "themes/$file" "$HOME/.oh-my-zsh"
-    showm "•"
+    showm "•" $GREY
   done
 
   for file in ${files[@]} ; do
     download "$file" "$HOME"
-    showm "•"
+    showm "•" $GREY
   done
 
   show " DONE" $GREEN
