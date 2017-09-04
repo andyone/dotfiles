@@ -83,7 +83,11 @@ function git_release {
 
   sleep 3
 
-  /usr/bin/git tag -s "v$1" -m "Version $1"
+  if [[ -e $HOME/.gnupg ]] ; then
+    /usr/bin/git tag -s "v$1" -m "Version $1"
+  else
+    /usr/bin/git tag "v$1" -m "Version $1"
+  fi
 
   [[ $? -ne 0 ]] && return 1
 
