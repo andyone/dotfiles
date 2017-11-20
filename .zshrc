@@ -57,9 +57,13 @@ function tmux_win_rename {
 }
 
 function git_trap {
-  if [[ $1 == "release" ]] ; then
+  if [[ "$1" == "release" ]] ; then
     shift
     git_release $*
+    return $?
+  elif [[ "$1" == "tag-delete" ]] ; then
+    shift
+    git_tag_delete $*
     return $?
   else
     /usr/bin/git $*
@@ -96,6 +100,21 @@ function git_release {
   [[ $? -ne 0 ]] && return 1
 
   /usr/bin/git checkout develop
+
+  [[ $? -ne 0 ]] && return 1
+}
+
+function git_tag_delete {
+  if [[ $# -eq 0 ]] ; then
+    echo "usage: git tag-delete <tag>"
+    return 0
+  fi
+
+  git tag -d $1
+
+  [[ $? -ne 0 ]] && return 1
+
+  git push origin :refs/tags/$1
 
   [[ $? -ne 0 ]] && return 1
 }
