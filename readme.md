@@ -32,3 +32,6 @@ bash <(curl -fsSL https://raw.githubusercontent.com/andyone/dotfiles/master/inst
 | <kbd>F8</kbd> | Select window #8 |
 | <kbd>F9</kbd> | Select window #9 |
 | <kbd>F12</kbd> | Kill current window |
+|----------------------------------------|-------------------------------------------|
+
+_For function keys support in XShell 5 you should use custom [mappings file](xshell.tkm)._
