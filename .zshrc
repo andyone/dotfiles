@@ -34,13 +34,20 @@ export PATH=~/projects/gocode/bin:$PATH
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+
+# Aliases
 alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias g="grep --color=auto"
 alias hf="history_find"
 alias trf="terrafarm"
 alias tx="tmux attach 2>/dev/null || tmux new"
 alias txc="tmux_win_rename"
+
+# Traps
 alias git="git_trap"
+alias cd="cd_trap"
+
+################################################################################
 
 function gml {
   gometalinter -D gotype --deadline 30s $@ | grep -v ALL_CAPS
@@ -69,6 +76,36 @@ function git_trap {
     /usr/bin/git $*
     return $?
   fi
+}
+
+function cd_trap() {
+  # We not in a tmux session
+  if [[ -z "$TMUX" ]] ; then
+    \cd $@
+    return $?
+  fi
+
+  local window_name=$(tmux display-message -p '#W')
+  local window_name_fs="$window_name[0,1]"
+  local shell_name=$(printenv SHELL | sed 's/.*\///')
+
+  # Name of shell it is default name for new tmux window
+  if [[ "$window_name" != "$shell_name" ]] ; then
+    # Window has custom name
+    if [[ "$window_name_fs" != "/" && "$window_name_fs" != "~" ]] ; then
+      \cd $@
+      return $?
+    fi
+  fi
+
+  \cd $@
+  local ec=$?
+
+  if [[ $ec -ne 0 ]] ; then
+    return $ec
+  fi
+
+  tmux_win_rename
 }
 
 function git_release {
