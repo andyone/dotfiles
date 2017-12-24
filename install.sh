@@ -57,22 +57,28 @@ check() {
   local has_errors
 
   if [[ ! -e $HOME/.oh-my-zsh ]] ; then
-    show "oh-my-zsh is reqired" $RED
+    error "oh-my-zsh is reqired"
     has_errors=true
   fi
 
   if ! isAppInstalled "zsh" ; then
-    show "zsh is reqired" $RED
+    error "zsh is reqired"
     has_errors=true
   fi
 
   if ! isAppInstalled "tmux" ; then
-    show "tmux is reqired" $RED
+    error "tmux is reqired"
     has_errors=true
   fi
 
   if ! isAppInstalled "git" ; then
-    show "git is reqired" $RED
+    error "git is reqired"
+    has_errors=true
+  fi
+
+  if [[ $(id -u) == "0" ]] ; then
+    error "Looks like you are insane and try to install .dotfiles to"
+    error "root account. Do not do this. Never."
     has_errors=true
   fi
 
@@ -156,6 +162,10 @@ showm() {
   else
     echo -e -n "$*"
   fi
+}
+
+error() {
+  show "$*" $RED 1>&2
 }
 
 ################################################################################
