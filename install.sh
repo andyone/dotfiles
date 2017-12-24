@@ -46,8 +46,11 @@ theme=("kaos-lite.zsh-theme" "kaos.zsh-theme")
 
 main() {
   check
-  doBackup
-  doInstall
+
+  pushd "$HOME" &> /dev/null
+    doBackup
+    doInstall
+  popd &> /dev/null
 }
 
 check() {
