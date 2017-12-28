@@ -4,7 +4,7 @@
 export ZSH=$HOME/.oh-my-zsh
 
 # GPG always wants to know what TTY it's running on
-export GPG_TTY=`tty`
+export GPG_TTY=$(tty)
 
 # Theme
 ZSH_THEME="kaos"
@@ -34,9 +34,9 @@ export PATH=~/projects/gocode/bin:$PATH
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-
 # Aliases
 alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
+alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias g="grep --color=auto"
 alias hf="history_find"
 alias trf="terrafarm"
