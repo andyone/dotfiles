@@ -42,6 +42,7 @@ alias hf="history_find"
 alias trf="terrafarm"
 alias tx="tmux attach 2>/dev/null || tmux new"
 alias txc="tmux_win_rename"
+alias goc="go_cover"
 
 # Traps
 alias git="git_trap"
@@ -163,6 +164,18 @@ function history_find {
   fi
 
   history | grep --color=always $@ | cut -f4-99 -d" "
+}
+
+function go_cover {
+  go test -coverprofile=c.out
+
+  if [[ $? -ne 0 ]] ; then
+    exit 1
+  fi
+
+  go tool cover -html=c.out -o coverage.html
+
+  rm -f c.out
 }
 
 ################################################################################
