@@ -170,7 +170,7 @@ function go_cover {
   go test -coverprofile=c.out
 
   if [[ $? -ne 0 ]] ; then
-    exit 1
+    return 1
   fi
 
   go tool cover -html=c.out -o coverage.html
