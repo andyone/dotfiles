@@ -48,6 +48,8 @@ main() {
   check
 
   pushd "$HOME" &> /dev/null
+    doDepsInstall
+    doOMZInstall
     doBackup
     doInstall
   popd &> /dev/null
@@ -56,26 +58,6 @@ main() {
 check() {
   local has_errors
 
-  if [[ ! -e $HOME/.oh-my-zsh ]] ; then
-    error "oh-my-zsh is reqired"
-    has_errors=true
-  fi
-
-  if ! isAppInstalled "zsh" ; then
-    error "zsh is reqired"
-    has_errors=true
-  fi
-
-  if ! isAppInstalled "tmux" ; then
-    error "tmux is reqired"
-    has_errors=true
-  fi
-
-  if ! isAppInstalled "git" ; then
-    error "git is reqired"
-    has_errors=true
-  fi
-
   if [[ $(id -u) == "0" ]] ; then
     error "Looks like you are insane and try to install .dotfiles to"
     error "root account. Do not do this. Never."
@@ -83,6 +65,56 @@ check() {
   fi
 
   if [[ $has_errors ]] ; then
+    exit 1
+  fi
+}
+
+doOMZInstall() {
+  if [[ -e $HOME/.oh-my-zsh ]] ; then
+    return
+  fi
+
+  showm "Installing Oh My Zsh... " $BOLD
+
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" &>/dev/null
+
+  if [[ $? -ne 0 ]] ; then
+    show "DONE" $GREEN
+  else
+    show "ERROR" $RED
+    error "Can't install Oh My Zsh"
+    exit 1
+  fi
+}
+
+doDepsInstall() {
+  local deps=""
+
+  if ! isAppInstalled "zsh" ; then
+    deps="zsh"
+  fi
+
+  if ! isAppInstalled "tmux" ; then
+    deps="$deps tmux"
+  fi
+
+  if ! isAppInstalled "git" ; then
+    deps="$deps git"
+  fi
+
+  if [[ -z "$deps" ]] ; then
+    return
+  fi
+
+  showm "Installing deps... " $BOLD
+
+  yum -q -y install $deps 2> /dev/null
+
+  if [[ $? -ne 0 ]] ; then
+    show "DONE" $GREEN
+  else
+    show "ERROR" $RED
+    error "Can't install $deps"
     exit 1
   fi
 }
