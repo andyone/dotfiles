@@ -53,6 +53,8 @@ main() {
     doBackup
     doInstall
   popd &> /dev/null
+
+  env zsh
 }
 
 check() {
@@ -76,7 +78,7 @@ doOMZInstall() {
 
   show "Installing Oh My Zsh...\n" $BOLD
 
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  SHELL=/bin/zsh sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
   if [[ $? -ne 0 ]] ; then
     exit 1
