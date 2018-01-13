@@ -108,7 +108,7 @@ doDepsInstall() {
 
   showm "Installing deps... " $BOLD
 
-  yum -q -y install $deps 2> /dev/null
+  sudo yum -q -y install $deps 2> /dev/null
 
   if [[ $? -ne 0 ]] ; then
     show "DONE" $GREEN
