@@ -78,7 +78,7 @@ doOMZInstall() {
 
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" &>/dev/null
 
-  if [[ $? -ne 0 ]] ; then
+  if [[ $? -eq 0 ]] ; then
     show "DONE" $GREEN
   else
     show "ERROR" $RED
@@ -110,7 +110,7 @@ doDepsInstall() {
 
   sudo yum -q -y install $deps 2> /dev/null
 
-  if [[ $? -ne 0 ]] ; then
+  if [[ $? -eq 0 ]] ; then
     show "DONE" $GREEN
   else
     show "ERROR" $RED
