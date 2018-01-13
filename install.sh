@@ -104,7 +104,7 @@ doDepsInstall() {
 
   show "Installing deps...\n" $BOLD
 
-  sudo yum -y install $deps
+  sudo yum install $deps
 
   if [[ $? -ne 0 ]] ; then
     exit 1
