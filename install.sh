@@ -74,15 +74,11 @@ doOMZInstall() {
     return
   fi
 
-  showm "Installing Oh My Zsh... " $BOLD
+  show "Installing Oh My Zsh..." $BOLD
 
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" &>/dev/null
 
-  if [[ $? -eq 0 ]] ; then
-    show "DONE" $GREEN
-  else
-    show "ERROR" $RED
-    error "Can't install Oh My Zsh"
+  if [[ $? -ne 0 ]] ; then
     exit 1
   fi
 }
@@ -108,13 +104,9 @@ doDepsInstall() {
 
   showm "Installing deps... " $BOLD
 
-  sudo yum -q -y install $deps 2> /dev/null
+  sudo yum -y install $deps
 
-  if [[ $? -eq 0 ]] ; then
-    show "DONE" $GREEN
-  else
-    show "ERROR" $RED
-    error "Can't install $deps"
+  if [[ $? -ne 0 ]] ; then
     exit 1
   fi
 }
