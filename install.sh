@@ -76,11 +76,13 @@ doOMZInstall() {
 
   show "Installing Oh My Zsh...\n" $BOLD
 
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" &>/dev/null
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
   if [[ $? -ne 0 ]] ; then
     exit 1
   fi
+
+  show ""
 }
 
 doDepsInstall() {
@@ -109,6 +111,8 @@ doDepsInstall() {
   if [[ $? -ne 0 ]] ; then
     exit 1
   fi
+
+  show ""
 }
 
 doBackup() {
