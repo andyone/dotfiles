@@ -74,7 +74,7 @@ doOMZInstall() {
     return
   fi
 
-  show "Installing Oh My Zsh..." $BOLD
+  show "Installing Oh My Zsh...\n" $BOLD
 
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" &>/dev/null
 
@@ -102,7 +102,7 @@ doDepsInstall() {
     return
   fi
 
-  showm "Installing deps... " $BOLD
+  show "Installing deps...\n" $BOLD
 
   sudo yum -y install $deps
 
