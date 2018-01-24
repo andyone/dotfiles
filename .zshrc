@@ -183,5 +183,5 @@ function go_cover {
 
 # Include local zshrc
 if [[ -f $HOME/.zshrc.local ]] ; then
-  source .zshrc.local
+  source $HOME/.zshrc.local
 fi
