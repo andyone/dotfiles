@@ -8,17 +8,19 @@ A set of zsh, git, and tmux configuration files.
 bash <(curl -fsSL https://raw.githubusercontent.com/andyone/dotfiles/master/install.sh)
 ```
 
-### Aliases
+### Extra commands
 
-| Alias | Description |
-|--------------------|-------------------------------|
+| Name | Description |
+|------|-------------|
 | `sshk` | `ssh` command without checking and saving host key |
 | `scpk` | `scp` command without checking and saving host key |
 | `g` | `grep` |
-| `hf` | `grep` over shell history |
+| `hf` | `grep` over zsh history |
 | `tx` | Start or attach to tmux session |
 | `txc` | Rename current tmux window to short path to current directory |
 | `goc` | Create HTML coverage report for Go sources |
+| `git release {tag}` | Add signed version tag for latest commit to master branch |
+| `git tag-delete {tag}` | Delete tag everywhere |
 
 ### Tmux cheatsheet
 
