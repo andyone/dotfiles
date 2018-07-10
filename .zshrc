@@ -158,11 +158,11 @@ function git_tag_delete {
     return 0
   fi
 
-  git tag -d $1
+  git tag -d "$1"
 
   [[ $? -ne 0 ]] && return 1
 
-  git push origin :refs/tags/$1
+  git push origin ":refs/tags/$1"
 
   [[ $? -ne 0 ]] && return 1
 }
@@ -173,7 +173,7 @@ function history_find {
     return 0
   fi
 
-  history | grep --color=always $@ | cut -f4-99 -d" "
+  history | grep --color=always "$@" | cut -f4-99 -d" "
 }
 
 function ssh_connect() {
@@ -192,7 +192,7 @@ function ssh_connect() {
     /bin/ssh "$@"
   fi
 
-  local status$?
+  local status=$?
 
   # Restore window name
   tmux rename-window "$window_name"
