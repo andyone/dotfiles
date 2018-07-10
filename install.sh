@@ -107,7 +107,7 @@ doDepsInstall() {
   show "Installing deps...\n" $BOLD
 
   sudo yum clean expire-cache
-  sudo yum install $deps
+  sudo yum -y install $deps
 
   if [[ $? -ne 0 ]] ; then
     exit 1
