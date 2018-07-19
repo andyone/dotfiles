@@ -35,6 +35,7 @@ export PATH=~/projects/gocode/bin:$PATH
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Aliases
+alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias g="grep --color=auto"
 alias hf="history_find"
@@ -44,8 +45,6 @@ alias txc="tmux_win_rename"
 alias goc="go_cover"
 
 # Traps
-alias ssh="ssh_trap"
-alias sshk="sshk_trap"
 alias git="git_trap"
 alias cd="cd_trap"
 
@@ -53,16 +52,6 @@ alias cd="cd_trap"
 
 function gml {
   gometalinter -D gotype --deadline 30s $@ | grep -v ALL_CAPS
-}
-
-function ssh_trap {
-  ssh_connect "false" "$@"
-  return $?
-}
-
-function sshk_trap {
-  ssh_connect "true" "$@"
-  return $?
 }
 
 function tmux_win_rename {
@@ -174,30 +163,6 @@ function history_find {
   fi
 
   history | grep --color=always "$@" | cut -f4-99 -d" "
-}
-
-function ssh_connect() {
-  local keyless="$1"
-
-  shift 1
-
-  local host="${@: -1}"
-  local window_name="$(tmux display-message -p '#W')"
-
-  tmux rename-window "SSH:$host"
-
-  if [[ "$keyless" == "true" ]] ; then
-    /bin/ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet "$@"
-  else
-    /bin/ssh "$@"
-  fi
-
-  local status=$?
-
-  # Restore window name
-  tmux rename-window "$window_name"
-
-  return $status
 }
 
 function go_cover {
