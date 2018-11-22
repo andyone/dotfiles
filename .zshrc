@@ -39,8 +39,7 @@ alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o L
 alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias g="grep --color=auto"
 alias hf="history_find"
-alias trf="terrafarm"
-alias tx="tmux attach 2>/dev/null || tmux new"
+alias tx="tmux_start"
 alias txc="tmux_win_rename"
 alias goc="go_cover"
 
@@ -50,8 +49,14 @@ alias cd="cd_trap"
 
 ################################################################################
 
-function gml {
-  gometalinter -D gotype --deadline 30s $@ | grep -v ALL_CAPS
+function tmux_start {
+  if tmux attach 2>/dev/null ; then
+    return 0
+  fi
+
+  tmux new
+  sleep 0.33
+  tmux rename-window "HOME"
 }
 
 function tmux_win_rename {
@@ -71,6 +76,9 @@ function git_trap {
   elif [[ "$1" == "tag-delete" ]] ; then
     shift
     git_tag_delete $*
+  elif [[ "$1" == "undo" ]] ; then
+    shift
+    git_undo $*
   else
     /usr/bin/git $*
   fi
@@ -154,6 +162,11 @@ function git_tag_delete {
   git push origin ":refs/tags/$1"
 
   [[ $? -ne 0 ]] && return 1
+}
+
+function git_undo {
+  git reset HEAD~
+  return $?
 }
 
 function history_find {

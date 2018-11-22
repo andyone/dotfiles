@@ -21,6 +21,19 @@ bash <(curl -fsSL https://raw.githubusercontent.com/andyone/dotfiles/master/inst
 | `goc` | Create HTML coverage report for Go sources |
 | `git release {tag}` | Add signed version tag for latest commit to master branch |
 | `git tag-delete {tag}` | Delete tag everywhere |
+| `git undo` | Undo previous commit |
+
+### Git aliases
+
+| Alias | Original   |
+|-------|------------|
+| `st`  | `status`   |
+| `ci`  | `commit`   |
+| `br`  | `branch`   |
+| `co`  | `checkout` |
+| `df`  | `diff`     |
+| `dfi` | `icdiff`   |
+| `lg`  | `log`      |
 
 ### Tmux cheatsheet
 
