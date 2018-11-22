@@ -39,7 +39,7 @@ alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o L
 alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias g="grep --color=auto"
 alias hf="history_find"
-alias tx="tmux_start"
+alias tx="tmux attach 2>/dev/null || tmux new"
 alias txc="tmux_win_rename"
 alias goc="go_cover"
 
@@ -48,16 +48,6 @@ alias git="git_trap"
 alias cd="cd_trap"
 
 ################################################################################
-
-function tmux_start {
-  if tmux attach 2>/dev/null ; then
-    return 0
-  fi
-
-  tmux new
-  sleep 0.33
-  tmux rename-window "HOME"
-}
 
 function tmux_win_rename {
   if [[ -z "$TMUX" ]] ; then
