@@ -38,18 +38,26 @@ bash <(curl -fsSL https://raw.githubusercontent.com/andyone/dotfiles/master/inst
 ### Tmux cheatsheet
 
 | Shortcut | Action |
-|----------------------------------------|-------------------------------------------|
+|----------|--------|
 | <kbd>CTRL</kbd>+<kbd>B</kbd> | Prefix key |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>T</kbd> | Show current time |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>С</kbd> | Create new window |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>R</kbd> | Rearrage windows |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>W</kbd> | List windows |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>\|</kbd> | Split window vertically |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>-</kbd> | Split window horizontaly |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>,</kbd> | Set window name |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>N</kbd> | Next window |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>P</kbd> | Previous window |
+| <kbd>CTRL</kbd>+<kbd>←</kbd> | Move current window to the left (_reorder windows_) |
+| <kbd>CTRL</kbd>+<kbd>→</kbd> | Move current window to the right (_reorder windows_) |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>Q</kbd> | Show pane numbers |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>X</kbd> | Kill pane |
 | <kbd>ALT</kbd>+<kbd>←</kbd> | Select pane on the left |
 | <kbd>ALT</kbd>+<kbd>→</kbd> | Select pane on the right |
 | <kbd>ALT</kbd>+<kbd>↑</kbd> | Select upper pane |
 | <kbd>ALT</kbd>+<kbd>↓</kbd> | Select bottom pane |
-| <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>←</kbd> | Move current window to the left (_reorder windows_) |
-| <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>→</kbd> | Move current window to the right (_reorder windows_) |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>Space</kbd> | Set pane layout |
 | <kbd>F1</kbd> | Select window #1 |
 | <kbd>F2</kbd> | Select window #2 |
 | <kbd>F3</kbd> | Select window #3 |
