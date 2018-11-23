@@ -58,6 +58,8 @@ bash <(curl -fsSL https://raw.githubusercontent.com/andyone/dotfiles/master/inst
 | <kbd>ALT</kbd>+<kbd>↑</kbd> | Select upper pane |
 | <kbd>ALT</kbd>+<kbd>↓</kbd> | Select bottom pane |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>Space</kbd> | Set pane layout |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>PgUp</kbd> | Scroll up |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>PgDn</kbd> | Scroll down |
 | <kbd>F1</kbd> | Select window #1 |
 | <kbd>F2</kbd> | Select window #2 |
 | <kbd>F3</kbd> | Select window #3 |
