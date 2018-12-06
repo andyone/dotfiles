@@ -39,8 +39,8 @@ REPOSITORY="https://raw.githubusercontent.com/andyone/dotfiles/master/"
 
 ################################################################################
 
-files=(".gitconfig" ".gitignore" ".rbdef" ".rpmmacros" ".tmux.conf" ".zshrc")
-theme=("kaos-lite.zsh-theme" "kaos.zsh-theme")
+files=(".gitconfig" ".gitignore" ".rbdef" ".rpmmacros" ".tigrc" ".tmux.conf" ".zshrc")
+themes=("kaos-lite.zsh-theme" "kaos.zsh-theme")
 
 ################################################################################
 
@@ -136,7 +136,7 @@ doInstall() {
 
   showm "Installing " $BOLD
 
-  for file in ${theme[@]} ; do
+  for file in ${themes[@]} ; do
     download "themes/$file" "$HOME/.oh-my-zsh"
     showm "•" $GREY
   done

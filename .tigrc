@@ -1,0 +1,6 @@
+# Use UTF-8 graphics by default
+set line-graphics = utf-8
+
+# Custom date format in main view
+set main-view-date = custom
+set main-view-date-format = "%Y-%m-%d %H:%M"

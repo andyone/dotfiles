@@ -1,6 +1,6 @@
 ## .dotfiles
 
-A set of zsh, git, and tmux configuration files.
+A set of zsh, git, tig, and tmux configuration files.
 
 ### Installation
 
