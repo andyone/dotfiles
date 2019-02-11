@@ -37,6 +37,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 # Aliases
 alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
+alias c="clear"
 alias g="grep --color=auto"
 alias hf="history_find"
 alias tx="tmux attach 2>/dev/null || tmux new"
