@@ -10,7 +10,7 @@ export GPG_TTY=$(tty)
 ZSH_THEME="kaos"
 
 # History
-HIST_STAMPS="yyyy/mm/dd"
+HIST_STAMPS="%Y/%m/%d %T"
 
 plugins=(git history)
 
