@@ -128,6 +128,8 @@ doBackup() {
 
   tar cjf "$output" $file_list &> /dev/null
 
+  chmod 600 "$output"
+
   show "Backup created as $output" $DARK
 }
 
