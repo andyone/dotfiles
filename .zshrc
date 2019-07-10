@@ -188,6 +188,15 @@ function go_cover {
 
 ################################################################################
 
+function reset-prompt-and-accept-line {
+  zle reset-prompt
+  zle .accept-line
+}
+
+zle -N accept-line reset-prompt-and-accept-line
+
+################################################################################
+
 # Include local zshrc
 if [[ -f $HOME/.zshrc.local ]] ; then
   source $HOME/.zshrc.local
