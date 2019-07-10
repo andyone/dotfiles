@@ -69,6 +69,8 @@ bash <(curl -fsSL https://raw.githubusercontent.com/andyone/dotfiles/master/inst
 | <kbd>F7</kbd> | Select window #7 |
 | <kbd>F8</kbd> | Select window #8 |
 | <kbd>F9</kbd> | Select window #9 |
+| <kbd>F10</kbd> | Select window #10 |
+| <kbd>F11</kbd> | Select window #11 |
 | <kbd>F12</kbd> | Kill current window |
 
 _For function keys support in XShell 5 you should use custom [mappings file](xshell.tkm)._
