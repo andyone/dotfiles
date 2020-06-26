@@ -12,14 +12,14 @@ bash <(curl -fsSL https://raw.githubusercontent.com/andyone/dotfiles/master/inst
 
 | Name | Description |
 |------|-------------|
+| `tx` | Start or attach to tmux session |
 | `sshk` | `ssh` command without checking and saving host key |
 | `scpk` | `scp` command without checking and saving host key |
-| `g` | `grep` |
+| `g` | `grep` shortcut |
 | `hf` | `grep` over zsh history |
-| `tx` | Start or attach to tmux session |
 | `txc` | Rename current tmux window to short path to current directory |
 | `goc` | Create HTML coverage report for Go sources |
-| `git release {tag}` | Add signed version tag for latest commit to master branch |
+| `git release {tag}` | Add signed version tag for the latest commit to master branch |
 | `git tag-delete {tag}` | Delete tag everywhere |
 | `git undo` | Undo previous commit |
 
@@ -73,4 +73,4 @@ bash <(curl -fsSL https://raw.githubusercontent.com/andyone/dotfiles/master/inst
 | <kbd>F11</kbd> | Select window #11 |
 | <kbd>F12</kbd> | Kill current window |
 
-_For function keys support in XShell 5 you should use custom [mappings file](xshell.tkm)._
+_For function keys support in XShell 5+ you should use custom [mappings file](xshell.tkm)._
