@@ -44,7 +44,7 @@ alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o L
 alias c="clear"
 alias g="grep --color=auto"
 alias hf="history_find"
-alias tx="tmux attach 2>/dev/null || tmux new"
+alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
 alias txc="tmux_win_rename"
 alias goc="go_cover"
 
