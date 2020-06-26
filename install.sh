@@ -167,7 +167,7 @@ download() {
   local name="$1"
   local dir="$2"
 
-  curl -s "$REPOSITORY/$name" -o "$dir/$name"
+  curl -fsL "$REPOSITORY/$name" -o "$dir/$name"
 }
 
 isAppInstalled () {
