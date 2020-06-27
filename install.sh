@@ -49,6 +49,7 @@ main() {
 
   pushd "$HOME" &> /dev/null
     doDepsInstall
+    checkDeps
     doOMZInstall
     doBackup
     doInstall
@@ -65,6 +66,17 @@ check() {
   fi
 
   if [[ $has_errors ]] ; then
+    exit 1
+  fi
+}
+
+checkDeps() {
+  local tmux_major
+
+  tmux_major=$(rpm -q --queryformat '%{version}' tmux | cut -b1)
+
+  if [[ "$tmux_major" != "3" ]] ; then
+    error "tmux ≥ 3.0 is required"
     exit 1
   fi
 }
