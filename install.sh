@@ -39,7 +39,7 @@ REPOSITORY="https://raw.githubusercontent.com/andyone/dotfiles/master/"
 
 ################################################################################
 
-files=(".gitconfig" ".gitignore" ".rbdef" ".rpmmacros" ".tigrc" ".tmux.conf" ".zshrc")
+files=(".gitconfig" ".gitignore" ".dir_colors" ".rbdef" ".rpmmacros" ".tigrc" ".tmux.conf" ".zshrc")
 themes=("kaos-lite.zsh-theme" "kaos.zsh-theme")
 
 ################################################################################
