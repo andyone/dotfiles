@@ -2,6 +2,9 @@
  excludesfile = ~/.gitignore
  pager = less -x1,5
 
+[init]
+  defaultBranch = master
+
 [color]
  diff = auto
   status = auto
