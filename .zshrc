@@ -88,7 +88,7 @@ function cd_trap() {
     return $?
   fi
 
-  local window_name=$(tmux display-message -p '#W')
+  local window_name="$(tmux display-message -p '#W')"
   local window_name_fs="$window_name[0,1]"
   local shell_name=$(printenv SHELL | sed 's/.*\///')
 
