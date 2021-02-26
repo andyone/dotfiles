@@ -32,6 +32,8 @@ export LC_ALL="en_US.UTF-8"
 export TERM="xterm-256color"
 
 # Golang env
+export GOPROXY=direct
+export GO111MODULE=auto
 export GOPATH=~/projects/gocode
 export GOBIN=~/projects/gocode/bin
 export PATH=~/projects/gocode/bin:$PATH
