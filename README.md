@@ -44,11 +44,13 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | <kbd>CTRL+B</kbd> → <kbd>С</kbd> | Create new window |
 | <kbd>CTRL+B</kbd> → <kbd>R</kbd> | Rearrage windows |
 | <kbd>CTRL+B</kbd> → <kbd>W</kbd> | List windows |
+| <kbd>CTRL+B</kbd> → <kbd>S</kbd> | Show current tmux sessions |
 | <kbd>CTRL+B</kbd> → <kbd>\|</kbd> | Split window vertically |
 | <kbd>CTRL+B</kbd> → <kbd>-</kbd> | Split window horizontaly |
 | <kbd>CTRL+B</kbd> → <kbd>,</kbd> | Set window name |
 | <kbd>CTRL+B</kbd> → <kbd>N</kbd> | Next window |
 | <kbd>CTRL+B</kbd> → <kbd>P</kbd> | Previous window |
+| <kbd>CTRL+B</kbd> → <kbd>A</kbd> | Toggle panes syncing |
 | <kbd>CTRL</kbd>+<kbd>←</kbd> | Move current window to the left (_reorder windows_) |
 | <kbd>CTRL</kbd>+<kbd>→</kbd> | Move current window to the right (_reorder windows_) |
 | <kbd>CTRL+B</kbd> → <kbd>Q</kbd> | Show pane numbers |
