@@ -17,6 +17,9 @@
 [merge]
   summary = true
 
+[help]
+  autocorrect = 30
+
 [alias]
   st = status
   ci = commit
