@@ -76,6 +76,9 @@ function git_trap {
   elif [[ "$1" == "undo" ]] ; then
     shift
     git_undo $*
+  elif [[ "$1" == "pr" ]] ; then
+    shift
+    git_pr $*
   else
     /usr/bin/git $*
   fi
@@ -157,6 +160,21 @@ function git_tag_delete {
   [[ $? -ne 0 ]] && return 1
 
   git push origin ":refs/tags/$1"
+
+  [[ $? -ne 0 ]] && return 1
+}
+
+function git_pr {
+  if [[ $# -eq 0 ]] ; then
+    echo "usage: git pr <pr-id>"
+    return 0
+  fi
+
+  git fetch origin pull/$1/head:PR-$1
+
+  [[ $? -ne 0 ]] && return 1
+
+  git checkout PR-$1
 
   [[ $? -ne 0 ]] && return 1
 }
