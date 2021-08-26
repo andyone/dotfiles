@@ -165,23 +165,30 @@ function git_tag_delete {
 }
 
 function git_pr {
-  if [[ $# -eq 0 ]] ; then
-    echo "usage: git pr <pr-id>"
+  if [[ $# -ne 2 ]] ; then
+    echo "Usage: git pr (get|rm) <pr-id>"
     return 0
   fi
 
-  git fetch origin pull/$1/head:PR-$1
+  if [[ "$1" == "get" ]] ; then
+    git fetch origin "pull/$2/head:PR-$2"
 
-  [[ $? -ne 0 ]] && return 1
+    [[ $? -ne 0 ]] && return 1
 
-  git checkout PR-$1
+    git checkout "PR-$2"
 
-  [[ $? -ne 0 ]] && return 1
-}
+    [[ $? -ne 0 ]] && return 1
+  elif [[ "$1" == "rm" ]] ; then
+    git checkout -
 
-function git_undo {
-  git reset HEAD~
-  return $?
+    [[ $? -ne 0 ]] && return 1
+
+    git branch -D "PR-$2"
+
+    [[ $? -ne 0 ]] && return 1
+  else
+    echo "Unknown command $1"
+  fi
 }
 
 function history_find {
