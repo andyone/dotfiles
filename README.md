@@ -21,6 +21,7 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | `goc` | Create HTML coverage report for Go sources |
 | `git release {tag}` | Add signed version tag for the latest commit to master branch |
 | `git tag-delete {tag}` | Delete tag everywhere |
+| `git tag-update {tag}` | Update tag to the latest commit |
 | `git pr {pr}` | Fetch PR with given ID from GitHub |
 | `git undo` | Undo previous commit |
 

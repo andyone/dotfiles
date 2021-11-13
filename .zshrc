@@ -73,6 +73,9 @@ function git_trap {
   elif [[ "$1" == "tag-delete" ]] ; then
     shift
     git_tag_delete $*
+  elif [[ "$1" == "tag-update" ]] ; then
+    shift
+    git_tag_update $*
   elif [[ "$1" == "undo" ]] ; then
     shift
     git_undo $*
@@ -118,7 +121,7 @@ function cd_trap() {
 
 function git_release {
   if [[ $# -eq 0 ]] ; then
-    echo "usage: git release <version>"
+    echo "Usage: git release <version>"
     return 0
   fi
 
@@ -146,12 +149,31 @@ function git_release {
 
   /usr/bin/git checkout develop
 
+  return $?
+}
+
+function git_tag_update {
+  if [[ $# -eq 0 ]] ; then
+    echo "Usage: git tag-update <tag>"
+    return 0
+  fi
+
+  if [[ -e $HOME/.gnupg ]] ; then
+    /usr/bin/git tag -f -s "$1" -m "Version ${1/v/}"
+  else
+    /usr/bin/git tag -f "$1" -m "Version ${1/v/}"
+  fi
+
   [[ $? -ne 0 ]] && return 1
+
+  /usr/bin/git push -f --tags
+
+  return $?
 }
 
 function git_tag_delete {
   if [[ $# -eq 0 ]] ; then
-    echo "usage: git tag-delete <tag>"
+    echo "Usage: git tag-delete <tag>"
     return 0
   fi
 
@@ -161,7 +183,7 @@ function git_tag_delete {
 
   git push origin ":refs/tags/$1"
 
-  [[ $? -ne 0 ]] && return 1
+  return $?
 }
 
 function git_pr {
@@ -187,13 +209,18 @@ function git_pr {
 
     [[ $? -ne 0 ]] && return 1
   else
-    echo "Unknown command $1"
+    echo "Usage: git pr (get|rm) <pr-id>"
   fi
+}
+
+function git_undo {
+  git reset HEAD~
+  return $?
 }
 
 function history_find {
   if [[ $# -eq 0 ]] ; then
-    echo "usage: hf <string>"
+    echo "Usage: hf <string>"
     return 0
   fi
 
