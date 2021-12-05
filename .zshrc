@@ -158,6 +158,10 @@ function git_tag_update {
     return 0
   fi
 
+  /usr/bin/git pull
+
+  [[ $? -ne 0 ]] && return 1
+
   if [[ -e $HOME/.gnupg ]] ; then
     /usr/bin/git tag -f -s "$1" -m "Version ${1/v/}"
   else
