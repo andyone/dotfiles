@@ -38,7 +38,7 @@ export GOPATH=~/projects/gocode
 export GOBIN=~/projects/gocode/bin
 export PATH=~/projects/gocode/bin:$PATH
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.bin:/usr/local/bin:$PATH
 
 # Aliases
 alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
