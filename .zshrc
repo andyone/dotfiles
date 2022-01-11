@@ -10,10 +10,10 @@ export ZSH=$HOME/.oh-my-zsh
 # GPG always wants to know what TTY it's running on
 export GPG_TTY=$(tty)
 
-# Theme
+# Default theme
 ZSH_THEME="kaos"
 
-# History
+# History format
 HIST_STAMPS="%Y/%m/%d %T"
 
 plugins=(git history)
@@ -32,7 +32,7 @@ export LC_ALL="en_US.UTF-8"
 export TERM="xterm-256color"
 export COLORTERM="truecolor"
 
-# Golang env
+# Go env
 export GOPROXY=direct
 export GO111MODULE=auto
 export GOPATH=~/projects/gocode
@@ -42,30 +42,24 @@ export PATH=~/projects/gocode/bin:$PATH
 export PATH=$HOME/.bin:/usr/local/bin:$PATH
 
 # Aliases
+alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
 alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias c="clear"
 alias g="grep --color=auto"
+
+# Custom functions
 alias hf="history_find"
-alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
 alias txc="tmux_win_rename"
 alias goc="go_cover"
+alias bkp="create_backup"
 
 # Traps
 alias git="git_trap"
 alias cd="cd_trap"
+alias ssh="ssh_trap"
 
 ################################################################################
-
-function tmux_win_rename {
-  if [[ -z "$TMUX" ]] ; then
-    return 1
-  fi
-
-  cur_dir=$(pwd | sed "s|^$HOME|~|" 2> /dev/null | sed 's:\(\.\?[^/]\)[^/]*/:\1/:g')
-
-  tmux rename-window "$cur_dir"
-}
 
 function git_trap {
   if [[ "$1" == "release" ]] ; then
@@ -84,7 +78,7 @@ function git_trap {
     shift
     git_pr $*
   else
-    /usr/bin/git $*
+    \git $*
   fi
 
   return $?
@@ -93,7 +87,7 @@ function git_trap {
 function cd_trap() {
   # We not in a tmux session
   if [[ -z "$TMUX" ]] ; then
-    \cd $@
+    \cd $*
     return $?
   fi
 
@@ -105,19 +99,39 @@ function cd_trap() {
   if [[ "$window_name" != "$shell_name" ]] ; then
     # Window has custom name
     if [[ "$window_name_fs" != "/" && "$window_name_fs" != "~" ]] ; then
-      \cd $@
+      \cd $*
       return $?
     fi
   fi
 
-  \cd $@
-  local ec=$?
+  \cd $*
 
-  if [[ $ec -ne 0 ]] ; then
-    return $ec
+  if [[ $? -ne 0 ]] ; then
+    return $?
   fi
 
   tmux_win_rename
+}
+
+function ssh_trap() {
+  # We not in a tmux session
+  if [[ -z "$TMUX" ]] ; then
+    \ssh $*
+    return $?
+  fi
+
+  local ssh_session="$@[-1]"
+  local window_name="$(tmux display-message -p '#W')"
+
+  tmux rename-window "SSH ($ssh_session)"
+
+  \ssh $*
+
+  local ec=$?
+
+  tmux rename-window "$window_name"
+
+  return $ec
 }
 
 function git_release {
@@ -126,29 +140,29 @@ function git_release {
     return 0
   fi
 
-  /usr/bin/git checkout master
+  \git checkout master
 
   [[ $? -ne 0 ]] && return 1
 
-  /usr/bin/git pull
+  \git pull
 
   [[ $? -ne 0 ]] && return 1
 
   sleep 3
 
   if [[ -e $HOME/.gnupg ]] ; then
-    /usr/bin/git tag -s "v$1" -m "Version $1"
+    \git tag -s "v$1" -m "Version $1"
   else
-    /usr/bin/git tag "v$1" -m "Version $1"
+    \git tag "v$1" -m "Version $1"
   fi
 
   [[ $? -ne 0 ]] && return 1
 
-  /usr/bin/git push --tags
+  \git push --tags
 
   [[ $? -ne 0 ]] && return 1
 
-  /usr/bin/git checkout develop
+  \git checkout develop
 
   return $?
 }
@@ -159,19 +173,19 @@ function git_tag_update {
     return 0
   fi
 
-  /usr/bin/git pull
+  \git pull
 
   [[ $? -ne 0 ]] && return 1
 
   if [[ -e $HOME/.gnupg ]] ; then
-    /usr/bin/git tag -f -s "$1" -m "Version ${1/v/}"
+    \git tag -f -s "$1" -m "Version ${1/v/}"
   else
-    /usr/bin/git tag -f "$1" -m "Version ${1/v/}"
+    \git tag -f "$1" -m "Version ${1/v/}"
   fi
 
   [[ $? -ne 0 ]] && return 1
 
-  /usr/bin/git push -f --tags
+  \git push -f --tags
 
   return $?
 }
@@ -182,11 +196,11 @@ function git_tag_delete {
     return 0
   fi
 
-  git tag -d "$1"
+  \git tag -d "$1"
 
   [[ $? -ne 0 ]] && return 1
 
-  git push origin ":refs/tags/$1"
+  \git push origin ":refs/tags/$1"
 
   return $?
 }
@@ -198,19 +212,19 @@ function git_pr {
   fi
 
   if [[ "$1" == "get" ]] ; then
-    git fetch origin "pull/$2/head:PR-$2"
+    \git fetch origin "pull/$2/head:PR-$2"
 
     [[ $? -ne 0 ]] && return 1
 
-    git checkout "PR-$2"
+    \git checkout "PR-$2"
 
     [[ $? -ne 0 ]] && return 1
   elif [[ "$1" == "rm" ]] ; then
-    git checkout -
+    \git checkout -
 
     [[ $? -ne 0 ]] && return 1
 
-    git branch -D "PR-$2"
+    \git branch -D "PR-$2"
 
     [[ $? -ne 0 ]] && return 1
   else
@@ -219,8 +233,18 @@ function git_pr {
 }
 
 function git_undo {
-  git reset HEAD~
+  \git reset HEAD~
   return $?
+}
+
+function tmux_win_rename {
+  if [[ -z "$TMUX" ]] ; then
+    return 1
+  fi
+
+  cur_dir=$(pwd | sed "s|^$HOME|~|" 2> /dev/null | sed 's:\(\.\?[^/]\)[^/]*/:\1/:g')
+
+  tmux rename-window "$cur_dir"
 }
 
 function history_find {
@@ -243,6 +267,20 @@ function go_cover {
   go tool cover -html=c.out -o coverage.html
 
   rm -f c.out
+}
+
+function create_backup {
+  cp -rp "$1" "$1.bak"
+
+  [[ $? -ne 0 ]] && return 1
+
+  if [[ -d "$1" ]] ; then
+    chmod 0700 "$1.bak"
+  else
+    chmod 0600 "$1.bak"
+  fi
+
+  return $?
 }
 
 ################################################################################
