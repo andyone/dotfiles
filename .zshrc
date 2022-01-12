@@ -45,6 +45,7 @@ export PATH=$HOME/.bin:/usr/local/bin:$PATH
 alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
 alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
+alias scp="scp -o StrictHostKeyChecking=accept-new"
 alias c="clear"
 alias g="grep --color=auto"
 
