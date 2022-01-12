@@ -125,7 +125,7 @@ function ssh_trap() {
 
   tmux rename-window "SSH ($ssh_session)"
 
-  \ssh $*
+  \ssh -o StrictHostKeyChecking=accept-new $*
 
   local ec=$?
 
