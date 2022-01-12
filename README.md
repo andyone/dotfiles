@@ -1,4 +1,4 @@
-## .dotfiles
+## `.dotfiles`
 
 A set of zsh, git, tig, and tmux configuration files.
 
