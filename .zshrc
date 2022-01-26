@@ -45,7 +45,6 @@ export PATH=$HOME/.bin:/usr/local/bin:$PATH
 alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
 alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
-alias scp="scp -o StrictHostKeyChecking=accept-new"
 alias c="clear"
 alias g="grep --color=auto"
 
@@ -59,6 +58,7 @@ alias bkp="create_backup"
 alias git="git_trap"
 alias cd="cd_trap"
 alias ssh="ssh_trap"
+alias scp="scp_trap"
 
 ################################################################################
 
@@ -126,13 +126,27 @@ function ssh_trap() {
 
   tmux rename-window "SSH ($ssh_session)"
 
-  \ssh -o StrictHostKeyChecking=accept-new $*
+  if rpm -V 2>&1 | grep -q '7.4' ; then
+    \ssh $*
+  else
+    \ssh -o StrictHostKeyChecking=accept-new $*
+  fi
 
   local ec=$?
 
   tmux rename-window "$window_name"
 
   return $ec
+}
+
+function scp_trap() {
+  if rpm -V 2>&1 | grep -q '7.4' ; then
+    \scp $*
+  else
+    \scp -o StrictHostKeyChecking=accept-new $*
+  fi
+
+  return $?
 }
 
 function git_release {
