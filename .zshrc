@@ -126,7 +126,7 @@ function ssh_trap() {
 
   tmux rename-window "SSH ($ssh_session)"
 
-  if ssh -V 2>&1 | grep -q '7.4' ; then
+  if \ssh -V 2>&1 | grep -q '7.4' ; then
     \ssh $*
   else
     \ssh -o StrictHostKeyChecking=accept-new $*
@@ -140,7 +140,7 @@ function ssh_trap() {
 }
 
 function scp_trap() {
-  if ssh -V 2>&1 | grep -q '7.4' ; then
+  if \ssh -V 2>&1 | grep -q '7.4' ; then
     \scp $*
   else
     \scp -o StrictHostKeyChecking=accept-new $*
