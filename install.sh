@@ -156,12 +156,26 @@ doInstall() {
 
   for file in ${themes[@]} ; do
     download "themes/$file" "$HOME/.oh-my-zsh"
-    showm "•" $GREY
+
+    if [[ $? -eq 0 ]] ; then
+      showm "•" $GREY
+    else
+      showm "•" $RED
+      show " ERROR" $RED
+      exit 1
+    fi
   done
 
   for file in ${files[@]} ; do
     download "$file" "$HOME"
-    showm "•" $GREY
+
+    if [[ $? -eq 0 ]] ; then
+      showm "•" $GREY
+    else
+      showm "•" $RED
+      show " ERROR" $RED
+      exit 1
+    fi
   done
 
   show " DONE" $GREEN
@@ -182,8 +196,17 @@ getBackupFiles() {
 download() {
   local name="$1"
   local dir="$2"
+  local rnd http_code
 
-  curl -fsL "$REPOSITORY/$name" -o "$dir/$name"
+  rnd=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w8 | head -n1)
+
+  http_code=$(curl -s -L -w "%{http_code}" -o "$dir/$name" "$REPOSITORY/${name}?r${rnd}")
+
+  if [[ "$http_code" != "200" ]] ; then
+    return 1
+  fi
+
+  return 0
 }
 
 isAppInstalled () {
