@@ -272,7 +272,7 @@ function history_find {
 }
 
 function go_cover {
-  go test -coverprofile=c.out
+  go test -coverprofile=c.out $*
 
   if [[ $? -ne 0 ]] ; then
     rm -f c.out
