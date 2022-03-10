@@ -115,6 +115,10 @@ doDepsInstall() {
   if ! isAppInstalled "git" ; then
     deps="$deps git"
   fi
+  
+  if ! isAppInstalled "bzip2" ; then
+    deps="$deps bzip2"
+  fi
 
   if [[ -z "$deps" ]] ; then
     return
