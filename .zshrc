@@ -16,6 +16,9 @@ ZSH_THEME="kaos"
 # History format
 HIST_STAMPS="%Y/%m/%d %T"
 
+# Disable automatic oh-my-zsh update
+DISABLE_UPDATE_PROMPT=true
+
 plugins=(git history)
 
 source $ZSH/oh-my-zsh.sh
