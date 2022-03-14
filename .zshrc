@@ -16,13 +16,13 @@ ZSH_THEME="kaos"
 # History format
 HIST_STAMPS="%Y/%m/%d %T"
 
-# Disable automatic oh-my-zsh update
-DISABLE_UPDATE_PROMPT=true
-
 # Enable git and history plugins
 plugins=(git history)
 
 source $ZSH/oh-my-zsh.sh
+
+# Disable automatic oh-my-zsh update
+zstyle ':omz:update' mode disabled
 
 ################################################################################
 
