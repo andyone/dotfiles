@@ -20,7 +20,7 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | `txc` | Rename current tmux window to short path to current directory |
 | `goc` | Create HTML coverage report for Go sources |
 | `bkp` | Create backup for file or directory |
-| `git release {tag}` | Add signed version tag for the latest commit to the master branch |
+| `git release {version}` | Add signed version tag for the latest commit to the master branch |
 | `git tag-delete {tag}` | Delete tag everywhere |
 | `git tag-update {tag}` | Update tag to the latest commit |
 | `git pr {pr}` | Fetch PR with given ID from GitHub |
