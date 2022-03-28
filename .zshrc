@@ -19,10 +19,10 @@ HIST_STAMPS="%Y/%m/%d %T"
 # Enable git and history plugins
 plugins=(git history)
 
-source $ZSH/oh-my-zsh.sh
-
 # Disable automatic oh-my-zsh update
 zstyle ':omz:update' mode disabled
+
+source $ZSH/oh-my-zsh.sh
 
 ################################################################################
 

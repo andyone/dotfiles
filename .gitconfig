@@ -1,12 +1,12 @@
 [core]
- excludesfile = ~/.gitignore
- pager = less -x1,5
+  excludesfile = ~/.gitignore
+  pager = less -x1,5
 
 [init]
   defaultBranch = master
 
 [color]
- diff = auto
+  diff = auto
   status = auto
   branch = auto
   interactive = auto
@@ -39,11 +39,8 @@
   support = support-
   versiontag =
 
-[http "https://pkg.re"]
-  followRedirects = true
-
-[http "https://gopkg.in"]
-  followRedirects = true      
+[pull]
+  rebase = false
 
 [include]
   path = .gitconfig.local
