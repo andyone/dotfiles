@@ -102,7 +102,7 @@ function cd_trap() {
 
   # Name of shell it is default name for new tmux window
   if [[ "$window_name" != "$shell_name" ]] ; then
-    # Window has custom name
+    # Window has custom name, not path, so do not rename window
     if [[ "$window_name_fs" != "/" && "$window_name_fs" != "~" ]] ; then
       \cd $*
       return $?
@@ -121,26 +121,42 @@ function cd_trap() {
 function ssh_trap() {
   # We not in a tmux session
   if [[ -z "$TMUX" ]] ; then
-    \ssh $*
+    ssh_exec $*
     return $?
   fi
 
   local ssh_session="$@[-1]"
   local window_name="$(tmux display-message -p '#W')"
+  local window_name_fs="$window_name[0,1]"
+
+  # Window has custom name, not path, so do not rename window
+  if [[ "$window_name_fs" != "/" && "$window_name_fs" != "~" ]] ; then
+    ssh_exec $*
+    return $?
+  fi
+
+  local window_index="$(tmux display-message -p '#I')"
 
   tmux rename-window "SSH ($ssh_session)"
 
+  ssh_exec $*
+
+  local ec=$?
+
+  # Restore original window name
+  tmux rename-window -t "$window_index" "$window_name"
+
+  return $ec
+}
+
+function ssh_exec() {
   if \ssh -V 2>&1 | grep -q '7.4' ; then
     \ssh $*
   else
     \ssh -o StrictHostKeyChecking=accept-new $*
   fi
 
-  local ec=$?
-
-  tmux rename-window "$window_name"
-
-  return $ec
+  return $?
 }
 
 function scp_trap() {
