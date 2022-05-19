@@ -292,16 +292,19 @@ function history_find {
 }
 
 function go_cover {
-  go test -coverprofile=c.out $*
+  go test -coverprofile=cover.out $*
 
   if [[ $? -ne 0 ]] ; then
-    rm -f c.out
+    rm -f cover.out &> /dev/null
     return 1
   fi
 
-  go tool cover -html=c.out -o coverage.html
-
-  rm -f c.out
+  if which htmlcov &> /dev/null ; then
+    htmlcov -r cover.out
+  else
+    go tool cover -html=cover.out -o coverage.html
+    rm -f cover.out
+  fi
 }
 
 function create_backup {
