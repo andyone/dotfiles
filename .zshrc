@@ -175,13 +175,15 @@ function git_release {
     return 0
   fi
 
-  \git checkout master
+  if [[ $(\git rev-parse --abbrev-ref HEAD 2>/dev/null) != "master" ]] ; then
+    if ! \git checkout master ; then
+      return 1
+    fi
+  fi
 
-  [[ $? -ne 0 ]] && return 1
-
-  \git pull
-
-  [[ $? -ne 0 ]] && return 1
+  if ! \git pull ; then
+    return 1
+  fi
 
   sleep 3
 
@@ -193,11 +195,13 @@ function git_release {
 
   [[ $? -ne 0 ]] && return 1
 
-  \git push --tags
+  if ! \git push --tags ; then
+    return 1
+  fi
 
-  [[ $? -ne 0 ]] && return 1
-
-  \git checkout develop
+  if \git rev-parse --quiet --verify develop &> /dev/null ; then
+    \git checkout develop
+  fi
 
   return $?
 }
@@ -208,9 +212,9 @@ function git_tag_update {
     return 0
   fi
 
-  \git pull
-
-  [[ $? -ne 0 ]] && return 1
+  if ! \git pull ; then
+    return 1
+  fi
 
   if [[ -e $HOME/.gnupg ]] ; then
     \git tag -f -s "$1" -m "Version ${1/v/}"
@@ -231,9 +235,9 @@ function git_tag_delete {
     return 0
   fi
 
-  \git tag -d "$1"
-
-  [[ $? -ne 0 ]] && return 1
+  if ! \git tag -d "$1" ; then
+    return 1
+  fi
 
   \git push origin ":refs/tags/$1"
 
@@ -247,21 +251,21 @@ function git_pr {
   fi
 
   if [[ "$1" == "get" ]] ; then
-    \git fetch origin "pull/$2/head:PR-$2"
+    if ! \git fetch origin "pull/$2/head:PR-$2" ; then
+      return 1
+    fi
 
-    [[ $? -ne 0 ]] && return 1
-
-    \git checkout "PR-$2"
-
-    [[ $? -ne 0 ]] && return 1
+    if ! \git checkout "PR-$2" ; then
+      return 1
+    fi
   elif [[ "$1" == "rm" ]] ; then
-    \git checkout -
+    if ! \git checkout - ; then
+      return 1
+    fi
 
-    [[ $? -ne 0 ]] && return 1
-
-    \git branch -D "PR-$2"
-
-    [[ $? -ne 0 ]] && return 1
+    if ! \git branch -D "PR-$2" ; then
+      return 1
+    fi
   else
     echo "Usage: git pr (get|rm) <pr-id>"
   fi
@@ -292,9 +296,7 @@ function history_find {
 }
 
 function go_cover {
-  go test -coverprofile=cover.out $*
-
-  if [[ $? -ne 0 ]] ; then
+  if ! go test -coverprofile=cover.out $* ; then
     rm -f cover.out &> /dev/null
     return 1
   fi
@@ -308,9 +310,9 @@ function go_cover {
 }
 
 function create_backup {
-  cp -rp "$1" "$1.bak"
-
-  [[ $? -ne 0 ]] && return 1
+  if ! cp -rp "$1" "$1.bak" ; then
+    return 1
+  fi
 
   if [[ -d "$1" ]] ; then
     chmod 0700 "$1.bak"
