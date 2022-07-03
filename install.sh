@@ -92,6 +92,11 @@ doOMZInstall() {
 
   show "Installing Oh My Zsh…\n" $BOLD
 
+  show "Due to Oh My Zsh specific install process you have to press Ctrl+D" $YELLOW
+  show "or type 'exit' after installation to continue dotfiles install.\n" $YELLOW
+
+  sleep 5
+
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
   if [[ $? -ne 0 ]] ; then
