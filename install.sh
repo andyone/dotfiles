@@ -90,7 +90,7 @@ doOMZInstall() {
     return
   fi
 
-  show "Installing Oh My Zsh...\n" $BOLD
+  show "Installing Oh My Zsh…\n" $BOLD
 
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
@@ -103,6 +103,11 @@ doOMZInstall() {
 
 doDepsInstall() {
   local deps=""
+
+  if ! rpm -q kaos-repo &> /dev/null ; do
+    sudo yum clean expire-cache
+    sudo yum install -y https://yum.kaos.st/get/$(uname -r).rpm
+  done
 
   if ! isAppInstalled "zsh" ; then
     deps="zsh"
@@ -124,7 +129,7 @@ doDepsInstall() {
     return
   fi
 
-  show "Installing deps...\n" $BOLD
+  show "Installing deps…\n" $BOLD
 
   sudo yum clean expire-cache
   sudo yum -y install $deps
