@@ -65,7 +65,7 @@ check() {
 
   if [[ $(id -u) == "0" ]] ; then
     error "Looks like you are insane and try to install .dotfiles to"
-    error "root account. Do not do this. Never."
+    error "root account. Do NOT do this. Never."
     has_errors=true
   fi
 
