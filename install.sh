@@ -104,10 +104,10 @@ doOMZInstall() {
 doDepsInstall() {
   local deps=""
 
-  if ! rpm -q kaos-repo &> /dev/null ; do
+  if ! rpm -q kaos-repo &> /dev/null ; then
     sudo yum clean expire-cache
     sudo yum install -y https://yum.kaos.st/get/$(uname -r).rpm
-  done
+  fi
 
   if ! isAppInstalled "zsh" ; then
     deps="zsh"
