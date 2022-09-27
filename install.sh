@@ -49,7 +49,7 @@ themes=("kaos-lite.zsh-theme" "kaos.zsh-theme")
 ################################################################################
 
 main() {
-  check
+  check "$@"
 
   pushd "$HOME" &> /dev/null
     doDepsInstall
@@ -63,7 +63,7 @@ main() {
 check() {
   local has_errors
 
-  if [[ $(id -u) == "0" ]] ; then
+  if [[ $(id -u) == "0" && "$1" != "iamnuts" ]] ; then
     error "Looks like you are insane and try to install .dotfiles to"
     error "root account. Do NOT do this. Never."
     has_errors=true
