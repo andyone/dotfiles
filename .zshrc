@@ -51,6 +51,10 @@ alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o L
 alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias c="clear"
 alias g="grep --color=auto"
+alias e="$EDITOR"
+alias d="docker"
+alias dr="docker run --rm -it"
+alias de="docker exec -it"
 
 # Custom functions
 alias hf="history_find"

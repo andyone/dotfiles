@@ -16,6 +16,10 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | `sshk` | `ssh` command without checking and saving host key |
 | `scpk` | `scp` command without checking and saving host key |
 | `g` | `grep` shortcut |
+| `e` | Editor shortcut |
+| `d` | Docker shortcut |
+| `dr` | Docker `run` shortcut |
+| `de` | Docker `exec` shortcut |
 | `hf` | `grep` over zsh history |
 | `txc` | Rename current tmux window to short path to current directory |
 | `goc` | Create HTML coverage report for Go sources |
