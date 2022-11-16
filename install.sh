@@ -29,22 +29,21 @@ CL_MAG="\e[0;${MAG};49m"
 CL_CYAN="\e[0;${CYAN};49m"
 CL_GREY="\e[0;${GREY};49m"
 CL_DARK="\e[0;${DARK};49m"
-CL_BL_RED="\e[1;${RED};49m"
-CL_BL_GREEN="\e[1;${GREEN};49m"
-CL_BL_YELLOW="\e[1;${YELLOW};49m"
-CL_BL_BLUE="\e[1;${BLUE};49m"
-CL_BL_MAG="\e[1;${MAG};49m"
-CL_BL_CYAN="\e[1;${CYAN};49m"
-CL_BL_GREY="\e[1;${GREY};49m"
 
 ################################################################################
 
-REPOSITORY="https://raw.githubusercontent.com/andyone/dotfiles/master/"
+GH_CONTENT="https://raw.githubusercontent.com"
+REPOSITORY="$GH_CONTENT/andyone/dotfiles/master/"
 
 ################################################################################
 
 files=(".gitconfig" ".gitignore" ".dir_colors" ".rbdef" ".rpmmacros" ".tigrc" ".tmux.conf" ".zshrc")
 themes=("kaos-lite.zsh-theme" "kaos.zsh-theme")
+
+################################################################################
+
+pkg_manager=""
+dist=""
 
 ################################################################################
 
@@ -69,6 +68,15 @@ check() {
     has_errors=true
   fi
 
+  dist=$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5)
+
+  case "$dist" in
+    "7")       pkg_manager="/bin/yum" ;;
+    "8" | "9") pkg_manager="/bin/dnf" ;;
+    *) error "Uknown or unsupported OS"
+       has_errors=true ;;
+  esac
+
   if [[ $has_errors ]] ; then
     exit 1
   fi
@@ -86,21 +94,29 @@ checkDeps() {
 }
 
 doOMZInstall() {
-  if [[ -e $HOME/.oh-my-zsh ]] ; then
+  local current_user
+
+  if [[ -e "$HOME/.oh-my-zsh" ]] ; then
     return
   fi
 
   show "Installing Oh My Zsh…\n" $BOLD
 
-  show "Due to Oh My Zsh specific install process you have to press Ctrl+D" $YELLOW
-  show "or type 'exit' after installation to continue dotfiles install.\n" $YELLOW
+  warn "▲ Due to Oh My Zsh specific install process you have to press Ctrl+D"
+  warn "  or type 'exit' after installation to continue dotfiles install.\n"
 
   sleep 5
 
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  sh -c "$(curl -fsSL $GH_CONTENT/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
   if [[ $? -ne 0 ]] ; then
     exit 1
+  fi
+
+  current_user=$(id -u -n)
+
+  if ! getent passwd "$current_user" | grep -q '/bin/zsh' ; then
+    sudo usermod -s "/bin/zsh" "$current_user"
   fi
 
   show ""
@@ -110,8 +126,8 @@ doDepsInstall() {
   local deps=""
 
   if ! rpm -q kaos-repo &> /dev/null ; then
-    sudo yum clean expire-cache
-    sudo yum install -y https://yum.kaos.st/get/$(uname -r).rpm
+    sudo $pkg_manager clean expire-cache
+    sudo $pkg_manager install -y "https://yum.kaos.st/kaos-repo-latest.el${dist}.noarch.rpm"
   fi
 
   if ! isAppInstalled "zsh" ; then
@@ -125,7 +141,7 @@ doDepsInstall() {
   if ! isAppInstalled "git" ; then
     deps="$deps git"
   fi
-  
+
   if ! isAppInstalled "bzip2" ; then
     deps="$deps bzip2"
   fi
@@ -136,8 +152,8 @@ doDepsInstall() {
 
   show "Installing deps…\n" $BOLD
 
-  sudo yum clean expire-cache
-  sudo yum -y install $deps
+  sudo $pkg_manager clean expire-cache
+  sudo $pkg_manager -y install $deps
 
   if [[ $? -ne 0 ]] ; then
     exit 1
@@ -250,6 +266,10 @@ showm() {
 
 error() {
   show "$*" $RED 1>&2
+}
+
+warn() {
+  show "$*" $YELLOW 1>&2
 }
 
 ################################################################################
