@@ -23,6 +23,7 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | `hf` | `grep` over zsh history |
 | `txc` | Rename current tmux window to short path to current directory |
 | `goc` | Create HTML coverage report for Go sources |
+| `gcl` | Clone repository with Go sources |
 | `bkp` | Create backup for file or directory |
 | `git release {version}` | Add signed version tag for the latest commit to the master branch |
 | `git tag-delete {tag}` | Delete tag everywhere |

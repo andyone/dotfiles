@@ -60,6 +60,7 @@ alias de="docker exec -it"
 alias hf="history_find"
 alias txc="tmux_win_rename"
 alias goc="go_cover"
+alias gcl="go_clone"
 alias bkp="create_backup"
 
 # Traps
@@ -175,7 +176,7 @@ function scp_trap() {
 
 function git_release {
   if [[ $# -eq 0 ]] ; then
-    echo "Usage: git release <version>"
+    echo "Usage: git release {version}"
     return 0
   fi
 
@@ -212,7 +213,7 @@ function git_release {
 
 function git_tag_update {
   if [[ $# -eq 0 ]] ; then
-    echo "Usage: git tag-update <tag>"
+    echo "Usage: git tag-update {tag}"
     return 0
   fi
 
@@ -235,7 +236,7 @@ function git_tag_update {
 
 function git_tag_delete {
   if [[ $# -eq 0 ]] ; then
-    echo "Usage: git tag-delete <tag>"
+    echo "Usage: git tag-delete {tag}"
     return 0
   fi
 
@@ -250,7 +251,7 @@ function git_tag_delete {
 
 function git_pr {
   if [[ $# -ne 2 ]] ; then
-    echo "Usage: git pr (get|rm) <pr-id>"
+    echo "Usage: git pr {get|rm} {pr-id}"
     return 0
   fi
 
@@ -271,7 +272,7 @@ function git_pr {
       return 1
     fi
   else
-    echo "Usage: git pr (get|rm) <pr-id>"
+    echo "Usage: git pr {get|rm} {pr-id}"
   fi
 }
 
@@ -292,7 +293,7 @@ function tmux_win_rename {
 
 function history_find {
   if [[ $# -eq 0 ]] ; then
-    echo "Usage: hf <string>"
+    echo "Usage: hf {string}"
     return 0
   fi
 
@@ -311,6 +312,39 @@ function go_cover {
     go tool cover -html=cover.out -o coverage.html
     rm -f cover.out
   fi
+}
+
+function go_clone {
+  if [[ $# -eq 0 ]] ; then
+    echo "Usage: gcl {org}/{repo}"
+    return 0
+  fi
+
+  if ! which go &> /dev/null ; then
+    echo "Go is not installed"
+    return 1
+  fi
+
+  local org=$(echo "$1" | cut -f1 -d'/')
+  local repo=$(echo "$1" | cut -f2 -d'/')
+
+  if [[ "$org" == "" || "$repo" == "" ]] ; then
+    echo "Wrong source format"
+    return 1
+  fi
+
+  local clone_dir="$GOPATH/src/github.com/$org/$repo"
+
+  if [[ -d "$clone_dir" ]] ; then
+    echo "Target directory ($clone_dir) already exist"
+    return 1
+  fi
+
+  mkdir -p "$clone_dir"
+
+  git clone "git@github.com:$org/$repo.git" "$clone_dir"
+
+  return $?
 }
 
 function create_backup {
