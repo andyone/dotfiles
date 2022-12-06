@@ -319,6 +319,11 @@ function go_clone {
     return 0
   fi
 
+  if ! echo "$1" | grep -q '/' ; then
+    echo "Usage: gcl {org}/{repo}"
+    return 0
+  fi
+
   if ! which go &> /dev/null ; then
     echo "Go is not installed"
     return 1
