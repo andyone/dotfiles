@@ -13,6 +13,7 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | Name | Description |
 |------|-------------|
 | `tx` | Start or attach to tmux session |
+| `txn` | Rename current pane |
 | `sshk` | `ssh` command without checking and saving host key |
 | `scpk` | `scp` command without checking and saving host key |
 | `g` | `grep` shortcut |
@@ -48,6 +49,7 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | Shortcut | Action |
 |----------|--------|
 | <kbd>CTRL+B</kbd> | Prefix key |
+| <kbd>CTRL+T</kbd> | Toggle panes names |
 | <kbd>CTRL+B</kbd> → <kbd>T</kbd> | Show current time |
 | <kbd>CTRL+B</kbd> → <kbd>С</kbd> | Create new window |
 | <kbd>CTRL+B</kbd> → <kbd>R</kbd> | Rearrage windows |

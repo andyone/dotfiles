@@ -46,6 +46,7 @@ export PATH=$HOME/.bin:/usr/local/bin:$PATH
 
 # Aliases
 alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
+alias txn="tmux set-option -p @custom_pane_title"
 alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 alias c="clear"
