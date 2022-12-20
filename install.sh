@@ -401,7 +401,7 @@ showm() {
 # Code: No
 # Echo: No
 separator() {
-  local cols=$(tput cols)
+  local cols=$(tput cols 2> /dev/null)
   local i sep
 
   for i in $(seq 1 ${cols:-80}) ; do
