@@ -51,6 +51,10 @@ dist=""
 
 ################################################################################
 
+# Main function
+#
+# Code: No
+# Echo: No
 main() {
   banner
 
@@ -362,16 +366,30 @@ isCodespaces() {
 
 ################################################################################
 
+# Print message
+#
+# 1: Message (String)
+# 2: Color (Number) [Optional]
+#
+# Code: No
+# Echo: No
 show() {
-  if [[ -n "$2" && -z "$no_colors" ]] ; then
+  if [[ -n "$2" ]] ; then
     echo -e "\e[${2}m${1}\e[0m"
   else
     echo -e "$*"
   fi
 }
 
+# Print message without newline symbol
+#
+# 1: Message (String)
+# 2: Color (Number) [Optional]
+#
+# Code: No
+# Echo: No
 showm() {
-  if [[ -n "$2" && -z "$no_colors" ]] ; then
+  if [[ -n "$2" ]] ; then
     echo -e -n "\e[${2}m${1}\e[0m"
   else
     echo -e -n "$*"
@@ -393,12 +411,14 @@ separator() {
   show "\n$sep\n" $GREY
 }
 
+# Print error message
+#
+# 1: Error message (String)
+#
+# Code: No
+# Echo: No
 error() {
   show "▲ $*" $RED 1>&2
-}
-
-warn() {
-  show "▲ $*" $YELLOW 1>&2
 }
 
 ################################################################################
