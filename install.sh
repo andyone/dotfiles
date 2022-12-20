@@ -6,6 +6,10 @@ set -e
 
 ################################################################################
 
+VERSION="2.0.0"
+
+################################################################################
+
 NORM=0
 BOLD=1
 UNLN=4
@@ -48,33 +52,52 @@ dist=""
 ################################################################################
 
 main() {
-  check "$@"
+  banner
+
+  prepare "$@"
 
   pushd "$HOME" &> /dev/null
     doDepsInstall
-    checkDeps
     doOMZInstall
     doBackup
     doInstall
   popd &> /dev/null
+
+  show "\nAll done! Enjoy your dotfiles expirience!\n" $GREEN
 }
 
-check() {
-  local has_errors
+# Print banner
+#
+# Code: No
+# Echo: No
+banner() {
+  show ""
+  show "░░░██████╗░░█████╗░████████╗███████╗██╗██╗░░░░░███████╗░██████╗"
+  show "░░░██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██║██║░░░░░██╔════╝██╔════╝"
+  show "░░░██║░░██║██║░░██║░░░██║░░░█████╗░░██║██║░░░░░█████╗░░╚█████╗░"
+  show "░░░██║░░██║██║░░██║░░░██║░░░██╔══╝░░██║██║░░░░░██╔══╝░░░╚═══██╗"
+  show "██╗██████╔╝╚█████╔╝░░░██║░░░██║░░░░░██║███████╗███████╗██████╔╝"
+  show "╚═╝╚═════╝░░╚════╝░░░░╚═╝░░░╚═╝░░░░░╚═╝╚══════╝╚══════╝╚═════╝░"
+  show " by @andyone | version: $VERSION" $BOLD
+  show ""
 
-  if [[ $(id -u) == "0" && "$1" != "iamnuts" ]] ; then
-    error "Looks like you are insane and try to install .dotfiles to"
-    error "root account. Do NOT do this. Never."
-    has_errors=true
-  fi
+  sleep 3
+}
+
+# Prepare system for installing dotfiles
+#
+# Code: No
+# Echo: No
+prepare() {
+  local has_errors
 
   dist=$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5)
 
   case "$dist" in
     "7")       pkg_manager="/bin/yum" ;;
     "8" | "9") pkg_manager="/bin/dnf" ;;
-    *) error "Uknown or unsupported OS"
-       has_errors=true ;;
+    *)         error "Unknown or unsupported OS"
+               has_errors=true ;;
   esac
 
   if [[ $has_errors ]] ; then
@@ -82,7 +105,15 @@ check() {
   fi
 }
 
+# Check installed dependencies
+#
+# Code: No
+# Echo: No
 checkDeps() {
+  if isCodespaces ; then
+    return
+  fi
+
   local tmux_major
 
   tmux_major=$(rpm -q --queryformat '%{version}' tmux | cut -b1)
@@ -93,6 +124,10 @@ checkDeps() {
   fi
 }
 
+# Install Oh My Zsh
+#
+# Code: No
+# Echo: No
 doOMZInstall() {
   local current_user
 
@@ -100,14 +135,11 @@ doOMZInstall() {
     return
   fi
 
-  show "Installing Oh My Zsh…\n" $BOLD
+  show "Installing Oh My Zsh…" $CL_CYAN
 
-  warn "▲ Due to Oh My Zsh specific install process you have to press Ctrl+D"
-  warn "  or type 'exit' after installation to continue dotfiles install.\n"
+  separator
 
-  sleep 5
-
-  sh -c "$(curl -fsSL $GH_CONTENT/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  sh -c "$(curl -fsSL $GH_CONTENT/robbyrussell/oh-my-zsh/master/tools/install.sh) --unattended"
 
   if [[ $? -ne 0 ]] ; then
     exit 1
@@ -116,53 +148,89 @@ doOMZInstall() {
   current_user=$(id -u -n)
 
   if ! getent passwd "$current_user" | grep -q '/bin/zsh' ; then
-    sudo usermod -s "/bin/zsh" "$current_user"
+    if ! isRoot ; then
+      sudo usermod -s "/bin/zsh" "$current_user"
+    else
+      usermod -s "/bin/zsh" "$current_user"
+    fi
   fi
 
-  show ""
+  separator
 }
 
+# Install dependencies
+#
+# Code: No
+# Echo: No
 doDepsInstall() {
   local deps=""
 
-  if ! rpm -q kaos-repo &> /dev/null ; then
-    sudo $pkg_manager clean expire-cache
-    sudo $pkg_manager install -y "https://yum.kaos.st/kaos-repo-latest.el${dist}.noarch.rpm"
+  if ! isRoot ; then
+    sudo $pkg_manager clean expire-cache &> /dev/null
+  else
+    $pkg_manager clean expire-cache &> /dev/null
   fi
 
-  if ! isAppInstalled "zsh" ; then
+  if ! rpm -q kaos-repo &> /dev/null ; then
+    if ! isRoot ; then
+      sudo $pkg_manager install -y "https://yum.kaos.st/kaos-repo-latest.el${dist}.noarch.rpm"
+    else
+      $pkg_manager install -y "https://yum.kaos.st/kaos-repo-latest.el${dist}.noarch.rpm"
+    fi
+  fi
+
+  if ! hasApp "zsh" ; then
     deps="zsh"
   fi
 
-  if ! isAppInstalled "tmux" ; then
-    deps="$deps tmux"
+  if ! isCodespaces ; then
+    if ! hasApp "tmux" ; then
+      deps="$deps tmux"
+    fi
   fi
 
-  if ! isAppInstalled "git" ; then
+  if ! hasApp "git" ; then
     deps="$deps git"
   fi
 
-  if ! isAppInstalled "bzip2" ; then
+  if ! hasApp "bzip2" ; then
     deps="$deps bzip2"
+  fi
+
+  if ! hasApp "curl" ; then
+    deps="$deps curl"
   fi
 
   if [[ -z "$deps" ]] ; then
     return
   fi
 
-  show "Installing deps…\n" $BOLD
+  show "Installing deps…" $CL_CYAN
 
-  sudo $pkg_manager clean expire-cache
-  sudo $pkg_manager -y install $deps
+  separator
+
+  if ! isRoot ; then
+    sudo $pkg_manager -y install $deps
+  else
+    $pkg_manager -y install $deps
+  fi
 
   if [[ $? -ne 0 ]] ; then
     exit 1
   fi
 
-  show ""
+  separator
 }
 
+# Create backup
+#
+# Code: No
+# Echo: No
 doBackup() {
+  if isCodespaces ; then
+    return
+  fi
+
   local file_list=$(getBackupFiles)
 
   if [[ -z "$file_list" ]] ; then
@@ -170,15 +238,20 @@ doBackup() {
   fi
 
   local ts=$(date '+%Y%m%d%H%M%S')
-  local output="$HOME/.andyone-term-${ts}.tar.bz2"
+  local output="$HOME/.andyone-dotfiles-${ts}.tar.bz2"
 
   tar cjf "$output" $file_list &> /dev/null
 
   chmod 600 "$output"
 
   show "Backup created as $output" $DARK
+  show
 }
 
+# Install dotfiles
+#
+# Code: No
+# Echo: No
 doInstall() {
   local file
 
@@ -188,7 +261,7 @@ doInstall() {
     download "themes/$file" "$HOME/.oh-my-zsh"
 
     if [[ $? -eq 0 ]] ; then
-      showm "•" $GREY
+      showm "•" $GREEN
     else
       showm "•" $RED
       show " ERROR" $RED
@@ -200,7 +273,7 @@ doInstall() {
     download "$file" "$HOME"
 
     if [[ $? -eq 0 ]] ; then
-      showm "•" $GREY
+      showm "•" $GREEN
     else
       showm "•" $RED
       show " ERROR" $RED
@@ -211,25 +284,35 @@ doInstall() {
   show " DONE" $GREEN
 }
 
+# Collect list of files to backup
+#
+# Code: No
+# Echo: List of files (String)
 getBackupFiles() {
   local file_list
 
   for file in ${files[@]} ; do
     if [[ -e $HOME/$file ]] ; then
-      file_list="$HOME/$file $file_list"
+      file_list+="$HOME/$file"
     fi
   done
 
-  echo "${file_list% }"
+  echo "${file_list[*]}"
 }
 
+# Download file from GitHub
+#
+# 1: File name (String)
+# 2: Target directory (String)
+#
+# Code: Yes
+# Echo: No
 download() {
   local name="$1"
   local dir="$2"
   local rnd http_code
 
   rnd=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w8 | head -n1)
-
   http_code=$(curl -s -L -w "%{http_code}" -o "$dir/$name" "$REPOSITORY/${name}?r${rnd}")
 
   if [[ "$http_code" != "200" ]] ; then
@@ -239,14 +322,45 @@ download() {
   return 0
 }
 
-isAppInstalled () {
-  for app in "$@" ; do
-    type -P "$app" &> /dev/null
-    [[ $? -eq 1 ]] && return 1
-  done
+# Check if required app is installed
+#
+# 1: Variable Description (Type)
+#
+# Code: Yes
+# Echo: No
+hasApp() {
+  if ! type -P "$app" &> /dev/null ; then
+    return 1
+  fi
 
   return 0
 }
+
+# Return true if current user is root
+#
+# Code: Yes
+# Echo: No
+isRoot() {
+  if [[ $(id -u) == "0" ]] ; then
+    return 0
+  fi
+
+  return 1
+}
+
+# Return if we in codespaces
+#
+# Code: No
+# Echo: No
+isCodespaces() {
+  if [[ -n "$CODESPACES" ]] ; then
+    return 0
+  fi
+
+  return 1
+}
+
+################################################################################
 
 show() {
   if [[ -n "$2" && -z "$no_colors" ]] ; then
@@ -264,12 +378,27 @@ showm() {
   fi
 }
 
+# Show separator
+#
+# Code: No
+# Echo: No
+separator() {
+  local cols=$(tput cols)
+  local i sep
+
+  for i in $(seq 1 ${cols:-80}) ; do
+    sep="${sep}-"
+  done
+
+  show "\n$sep\n" $GREY
+}
+
 error() {
-  show "$*" $RED 1>&2
+  show "▲ $*" $RED 1>&2
 }
 
 warn() {
-  show "$*" $YELLOW 1>&2
+  show "▲ $*" $YELLOW 1>&2
 }
 
 ################################################################################
