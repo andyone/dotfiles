@@ -33,6 +33,13 @@ CL_MAG="\e[0;${MAG};49m"
 CL_CYAN="\e[0;${CYAN};49m"
 CL_GREY="\e[0;${GREY};49m"
 CL_DARK="\e[0;${DARK};49m"
+CL_BL_RED="\e[1;${RED};49m"
+CL_BL_GREEN="\e[1;${GREEN};49m"
+CL_BL_YELLOW="\e[1;${YELLOW};49m"
+CL_BL_BLUE="\e[1;${BLUE};49m"
+CL_BL_MAG="\e[1;${MAG};49m"
+CL_BL_CYAN="\e[1;${CYAN};49m"
+CL_BL_GREY="\e[1;${GREY};49m"
 
 ################################################################################
 
@@ -139,7 +146,7 @@ doOMZInstall() {
     return
   fi
 
-  show "Installing Oh My Zsh…" $CL_CYAN
+  show "${CL_BL_CYAN}Installing Oh My Zsh…${CL_NORM}"
 
   separator
 
@@ -209,7 +216,7 @@ doDepsInstall() {
     return
   fi
 
-  show "Installing deps…" $CL_CYAN
+  show "${CL_BL_CYAN}Installing deps…${CL_NORM}"
 
   separator
 
