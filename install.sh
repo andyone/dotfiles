@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2034
 
 ################################################################################
 
@@ -45,6 +46,7 @@ CL_BL_GREY="\e[1;${GREY};49m"
 
 GH_CONTENT="https://raw.githubusercontent.com"
 REPOSITORY="$GH_CONTENT/andyone/dotfiles/master/"
+OMZ_INSTALL="$GH_CONTENT/robbyrussell/oh-my-zsh/master/tools/install.sh"
 
 ################################################################################
 
@@ -83,13 +85,13 @@ main() {
 # Echo: No
 banner() {
   show ""
-  show "░░░██████╗░░█████╗░████████╗███████╗██╗██╗░░░░░███████╗░██████╗"
-  show "░░░██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██║██║░░░░░██╔════╝██╔════╝"
-  show "░░░██║░░██║██║░░██║░░░██║░░░█████╗░░██║██║░░░░░█████╗░░╚█████╗░"
-  show "░░░██║░░██║██║░░██║░░░██║░░░██╔══╝░░██║██║░░░░░██╔══╝░░░╚═══██╗"
-  show "██╗██████╔╝╚█████╔╝░░░██║░░░██║░░░░░██║███████╗███████╗██████╔╝"
-  show "╚═╝╚═════╝░░╚════╝░░░░╚═╝░░░╚═╝░░░░░╚═╝╚══════╝╚══════╝╚═════╝░"
-  show " by @andyone | version: $VERSION" $BOLD
+  show "░░░██████╗░░█████╗░████████╗███████╗██╗██╗░░░░░███████╗░██████╗" $DARK
+  show "░░░██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██║██║░░░░░██╔════╝██╔════╝" $DARK
+  show "░░░██║░░██║██║░░██║░░░██║░░░█████╗░░██║██║░░░░░█████╗░░╚█████╗░" $DARK
+  show "░░░██║░░██║██║░░██║░░░██║░░░██╔══╝░░██║██║░░░░░██╔══╝░░░╚═══██╗" $DARK
+  show "██╗██████╔╝╚█████╔╝░░░██║░░░██║░░░░░██║███████╗███████╗██████╔╝" $DARK
+  show "╚═╝╚═════╝░░╚════╝░░░░╚═╝░░░╚═╝░░░░░╚═╝╚══════╝╚══════╝╚═════╝░" $DARK
+  show " by @andyone | version: $VERSION" $DARK
   show ""
 
   sleep 3
@@ -150,9 +152,7 @@ doOMZInstall() {
 
   separator
 
-  sh -c "$(curl -fsSL $GH_CONTENT/robbyrussell/oh-my-zsh/master/tools/install.sh) --unattended"
-
-  if [[ $? -ne 0 ]] ; then
+  if ! sh -c "$(curl -fsSL "$OMZ_INSTALL") --unattended" ; then
     exit 1
   fi
 
@@ -221,11 +221,14 @@ doDepsInstall() {
   separator
 
   if ! isRoot ; then
+    # shellcheck disable=SC2086
     sudo $pkg_manager -y install $deps
   else
+    # shellcheck disable=SC2086
     $pkg_manager -y install $deps
   fi
 
+  # shellcheck disable=SC2181
   if [[ $? -ne 0 ]] ; then
     exit 1
   fi
@@ -242,15 +245,17 @@ doBackup() {
     return
   fi
 
-  local file_list=$(getBackupFiles)
+  local file_list ts output
+  file_list=$(getBackupFiles)
 
   if [[ -z "$file_list" ]] ; then
     return
   fi
 
-  local ts=$(date '+%Y%m%d%H%M%S')
-  local output="$HOME/.andyone-dotfiles-${ts}.tar.bz2"
+  ts=$(date '+%Y%m%d%H%M%S')
+  output="$HOME/.andyone-dotfiles-${ts}.tar.bz2"
 
+  # shellcheck disable=SC2086
   tar cjf "$output" $file_list &> /dev/null
 
   chmod 600 "$output"
@@ -268,10 +273,8 @@ doInstall() {
 
   showm "Installing " $BOLD
 
-  for file in ${themes[@]} ; do
-    download "themes/$file" "$HOME/.oh-my-zsh"
-
-    if [[ $? -eq 0 ]] ; then
+  for file in "${themes[@]}" ; do
+    if ! download "themes/$file" "$HOME/.oh-my-zsh" ; then
       showm "•" $GREEN
     else
       showm "•" $RED
@@ -280,10 +283,8 @@ doInstall() {
     fi
   done
 
-  for file in ${files[@]} ; do
-    download "$file" "$HOME"
-
-    if [[ $? -eq 0 ]] ; then
+  for file in "${files[@]}" ; do
+    if ! download "$file" "$HOME" ; then
       showm "•" $GREEN
     else
       showm "•" $RED
@@ -302,7 +303,7 @@ doInstall() {
 getBackupFiles() {
   local file_list
 
-  for file in ${files[@]} ; do
+  for file in "${files[@]}" ; do
     if [[ -e $HOME/$file ]] ; then
       file_list+="$HOME/$file"
     fi
@@ -340,7 +341,7 @@ download() {
 # Code: Yes
 # Echo: No
 hasApp() {
-  if ! type -P "$app" &> /dev/null ; then
+  if ! type -P "$1" &> /dev/null ; then
     return 1
   fi
 
@@ -408,10 +409,11 @@ showm() {
 # Code: No
 # Echo: No
 separator() {
-  local cols=$(tput cols -T xterm-256color 2> /dev/null)
-  local i sep
+  local i sep cols
 
-  for i in $(seq 1 ${cols:-80}) ; do
+  cols=$(tput cols -T xterm-256color 2> /dev/null)
+
+  for i in $(seq 1 "${cols:-80}") ; do
     sep="${sep}-"
   done
 
