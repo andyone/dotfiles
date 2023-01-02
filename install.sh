@@ -85,13 +85,13 @@ main() {
 # Echo: No
 banner() {
   show ""
-  show "░░░██████╗░░█████╗░████████╗███████╗██╗██╗░░░░░███████╗░██████╗" $DARK
-  show "░░░██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██║██║░░░░░██╔════╝██╔════╝" $DARK
-  show "░░░██║░░██║██║░░██║░░░██║░░░█████╗░░██║██║░░░░░█████╗░░╚█████╗░" $DARK
-  show "░░░██║░░██║██║░░██║░░░██║░░░██╔══╝░░██║██║░░░░░██╔══╝░░░╚═══██╗" $DARK
-  show "██╗██████╔╝╚█████╔╝░░░██║░░░██║░░░░░██║███████╗███████╗██████╔╝" $DARK
-  show "╚═╝╚═════╝░░╚════╝░░░░╚═╝░░░╚═╝░░░░░╚═╝╚══════╝╚══════╝╚═════╝░" $DARK
-  show " by @andyone | version: $VERSION" $DARK
+  show " ░░░██████╗░░█████╗░████████╗███████╗██╗██╗░░░░░███████╗░██████╗" $GREY
+  show " ░░░██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██║██║░░░░░██╔════╝██╔════╝" $GREY
+  show " ░░░██║░░██║██║░░██║░░░██║░░░█████╗░░██║██║░░░░░█████╗░░╚█████╗░" $GREY
+  show " ░░░██║░░██║██║░░██║░░░██║░░░██╔══╝░░██║██║░░░░░██╔══╝░░░╚═══██╗" $GREY
+  show " ██╗██████╔╝╚█████╔╝░░░██║░░░██║░░░░░██║███████╗███████╗██████╔╝" $GREY
+  show " ╚═╝╚═════╝░░╚════╝░░░░╚═╝░░░╚═╝░░░░░╚═╝╚══════╝╚══════╝╚═════╝░" $GREY
+  show "                                    by @andyone | version: $VERSION" $DARK
   show ""
 
   sleep 3
@@ -135,38 +135,6 @@ checkDeps() {
     error "tmux ≥ 3.0 is required"
     exit 1
   fi
-}
-
-# Install Oh My Zsh
-#
-# Code: No
-# Echo: No
-doOMZInstall() {
-  local current_user
-
-  if [[ -e "$HOME/.oh-my-zsh" ]] ; then
-    return
-  fi
-
-  show "${CL_BL_CYAN}Installing Oh My Zsh…${CL_NORM}"
-
-  separator
-
-  if ! sh -c "$(curl -fsSL "$OMZ_INSTALL") --unattended" ; then
-    exit 1
-  fi
-
-  current_user=$(id -u -n)
-
-  if ! getent passwd "$current_user" | grep -q '/bin/zsh' ; then
-    if ! isRoot ; then
-      sudo usermod -s "/bin/zsh" "$current_user"
-    else
-      usermod -s "/bin/zsh" "$current_user"
-    fi
-  fi
-
-  separator
 }
 
 # Install dependencies
@@ -236,6 +204,38 @@ doDepsInstall() {
   separator
 }
 
+# Install Oh My Zsh
+#
+# Code: No
+# Echo: No
+doOMZInstall() {
+  local current_user
+
+  if [[ -e "$HOME/.oh-my-zsh" ]] ; then
+    return
+  fi
+
+  show "${CL_BL_CYAN}Installing Oh My Zsh…${CL_NORM}"
+
+  separator
+
+  if ! sh -c "$(curl -fsSL "$OMZ_INSTALL") --unattended" ; then
+    exit 1
+  fi
+
+  current_user=$(id -u -n)
+
+  if ! getent passwd "$current_user" | grep -q '/bin/zsh' ; then
+    if ! isRoot ; then
+      sudo usermod -s "/bin/zsh" "$current_user"
+    else
+      usermod -s "/bin/zsh" "$current_user"
+    fi
+  fi
+
+  separator
+}
+
 # Create backup
 #
 # Code: No
@@ -255,10 +255,11 @@ doBackup() {
   ts=$(date '+%Y%m%d%H%M%S')
   output="$HOME/.andyone-dotfiles-${ts}.tar.bz2"
 
-  # shellcheck disable=SC2086
-  tar cjf "$output" $file_list &> /dev/null
-
-  chmod 600 "$output"
+  pushd "$HOME" &> /dev/null || return
+    # shellcheck disable=SC2086
+    tar cjf "$output" $file_list &> /dev/null
+    chmod 0600 "$output"
+  popd &> /dev/null || return
 
   show "Backup created as $output" $DARK
   show
@@ -274,26 +275,28 @@ doInstall() {
   showm "Installing " $BOLD
 
   for file in "${themes[@]}" ; do
-    if ! download "themes/$file" "$HOME/.oh-my-zsh" ; then
+    if download "themes/$file" "$HOME/.oh-my-zsh" ; then
       showm "•" $GREEN
     else
       showm "•" $RED
-      show " ERROR" $RED
+      show " ERROR\n" $RED
+      error "Can't download themes/$file"
       exit 1
     fi
   done
 
   for file in "${files[@]}" ; do
-    if ! download "$file" "$HOME" ; then
+    if download "$file" "$HOME" ; then
       showm "•" $GREEN
     else
       showm "•" $RED
-      show " ERROR" $RED
+      show " ERROR\n" $RED
+      error "Can't download $file"
       exit 1
     fi
   done
 
-  show " DONE" $GREEN
+  show " ${CL_BL_GREEN}DONE${CL_NORM}"
 }
 
 # Collect list of files to backup
@@ -305,7 +308,7 @@ getBackupFiles() {
 
   for file in "${files[@]}" ; do
     if [[ -e $HOME/$file ]] ; then
-      file_list+="$HOME/$file"
+      file_list+=("$file")
     fi
   done
 
@@ -322,6 +325,7 @@ getBackupFiles() {
 download() {
   local name="$1"
   local dir="$2"
+
   local rnd http_code
 
   rnd=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w8 | head -n1)
