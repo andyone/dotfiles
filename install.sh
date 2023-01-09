@@ -50,7 +50,7 @@ OMZ_INSTALL="$GH_CONTENT/robbyrussell/oh-my-zsh/master/tools/install.sh"
 
 ################################################################################
 
-files=(".gitconfig" ".gitignore" ".dir_colors" ".rbdef" ".rpmmacros" ".tigrc" ".tmux.conf" ".zshrc")
+files=(".gitconfig" ".gitignore" ".dir_colors" ".rpmmacros" ".tigrc" ".tmux.conf" ".zshrc")
 themes=("kaos-lite.zsh-theme" "kaos.zsh-theme")
 
 ################################################################################
