@@ -347,9 +347,15 @@ function go_clone {
 
   mkdir -p "$clone_dir"
 
-  git clone "git@github.com:$org/$repo.git" "$clone_dir"
+  if ! \git clone "git@github.com:$org/$repo.git" "$clone_dir" ; then
+    return 1
+  fi
 
-  return $?
+  pushd $clone_dir &> /dev/null
+    \git checkout develop &> /dev/null
+  popd &> /dev/null
+
+  return 0
 }
 
 function create_backup {
