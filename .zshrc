@@ -26,6 +26,10 @@ source $ZSH/oh-my-zsh.sh
 
 ################################################################################
 
+SSH_QUIET_OPTS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
+
+################################################################################
+
 # Export env vars
 export PAGER="less"
 export LESS="-MQR"
@@ -47,8 +51,8 @@ export PATH=$HOME/.bin:/usr/local/bin:$PATH
 # Aliases
 alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
 alias txn="tmux set-option -p @custom_pane_title"
-alias sshk="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
-alias scpk="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
+alias sshk="ssh $SSH_QUIET_OPTS"
+alias scpk="scp $SSH_QUIET_OPTS"
 alias c="clear"
 alias g="grep --color=auto"
 alias e="$EDITOR"
@@ -62,6 +66,8 @@ alias txc="tmux_win_rename"
 alias goc="go_cover"
 alias gcl="go_clone"
 alias bkp="create_backup"
+alias ssht="ssh_multi"
+alias flat="cat_flat"
 
 # Traps
 alias git="git_trap"
@@ -174,7 +180,7 @@ function scp_trap() {
   return $?
 }
 
-function git_release {
+function git_release() {
   if [[ $# -eq 0 ]] ; then
     echo "Usage: git release {version}"
     return 0
@@ -211,7 +217,7 @@ function git_release {
   return $?
 }
 
-function git_tag_update {
+function git_tag_update() {
   if [[ $# -eq 0 ]] ; then
     echo "Usage: git tag-update {tag}"
     return 0
@@ -234,7 +240,7 @@ function git_tag_update {
   return $?
 }
 
-function git_tag_delete {
+function git_tag_delete() {
   if [[ $# -eq 0 ]] ; then
     echo "Usage: git tag-delete {tag}"
     return 0
@@ -249,7 +255,7 @@ function git_tag_delete {
   return $?
 }
 
-function git_pr {
+function git_pr() {
   if [[ $# -ne 2 ]] ; then
     echo "Usage: git pr {get|rm} {pr-id}"
     return 0
@@ -276,12 +282,12 @@ function git_pr {
   fi
 }
 
-function git_undo {
+function git_undo() {
   \git reset HEAD~
   return $?
 }
 
-function tmux_win_rename {
+function tmux_win_rename() {
   if [[ -z "$TMUX" ]] ; then
     return 1
   fi
@@ -291,7 +297,7 @@ function tmux_win_rename {
   tmux rename-window "$cur_dir"
 }
 
-function history_find {
+function history_find() {
   if [[ $# -eq 0 ]] ; then
     echo "Usage: hf {string}"
     return 0
@@ -300,7 +306,7 @@ function history_find {
   history | grep --color=always "$@" | cut -f4-99 -d" "
 }
 
-function go_cover {
+function go_cover() {
   if ! go test -coverprofile=cover.out $* ; then
     rm -f cover.out &> /dev/null
     return 1
@@ -314,7 +320,7 @@ function go_cover {
   fi
 }
 
-function go_clone {
+function go_clone() {
   if [[ $# -eq 0 ]] ; then
     echo "Usage: gcl {org}/{repo}"
     return 0
@@ -326,7 +332,7 @@ function go_clone {
   fi
 
   if ! which go &> /dev/null ; then
-    echo "Go is not installed"
+    print_error "Go is not installed"
     return 1
   fi
 
@@ -334,14 +340,14 @@ function go_clone {
   local repo=$(echo "$1" | cut -f2 -d'/')
 
   if [[ "$org" == "" || "$repo" == "" ]] ; then
-    echo "Wrong source format"
+    print_error "Wrong source format"
     return 1
   fi
 
   local clone_dir="$GOPATH/src/github.com/$org/$repo"
 
   if [[ -d "$clone_dir" ]] ; then
-    echo "Target directory ($clone_dir) already exist"
+    print_error "Target directory ($clone_dir) already exist"
     return 1
   fi
 
@@ -358,7 +364,7 @@ function go_clone {
   return 0
 }
 
-function create_backup {
+function create_backup() {
   if ! cp -rp "$1" "$1.bak" ; then
     return 1
   fi
@@ -370,6 +376,42 @@ function create_backup {
   fi
 
   return $?
+}
+
+function ssh_multi() {
+  if [[ $# -lt 2 ]] ; then
+    echo "Usage: $0 ip1 ip2…"
+    return 0
+  fi
+
+  if [[ -z "$TMUX" ]] ; then
+    print_error "This alias works only with TMUX"
+    return 1
+  fi
+
+  tmux new-window -n "SSH ($#)" "ssh $SSH_QUIET_OPTS $1"
+
+  shift 1
+
+  for conn in "$@" ; do
+    tmux split-window "ssh $SSH_QUIET_OPTS $conn"
+    tmux set-option -p @custom_pane_title "$conn"
+  done
+
+  tmux select-layout even-vertical
+}
+
+function cat_flat() {
+  if [[ $# -lt 2 ]] ; then
+    echo "Usage: $0 file"
+    return 0
+  fi
+
+  cat $1 | tr '\n' ' ' ; echo ""
+}
+
+function print_error() {
+  echo -e "\e[31m▲ $*\e[0m"
 }
 
 ################################################################################
