@@ -52,6 +52,7 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 |----------|--------|
 | <kbd>CTRL+B</kbd> | Prefix key |
 | <kbd>CTRL+T</kbd> | Toggle panes names |
+| <kbd>CTRL+Z</kbd> | Toggle pane zoom |
 | <kbd>CTRL+B</kbd> → <kbd>T</kbd> | Show current time |
 | <kbd>CTRL+B</kbd> → <kbd>С</kbd> | Create new window |
 | <kbd>CTRL+B</kbd> → <kbd>R</kbd> | Rearrage windows |
