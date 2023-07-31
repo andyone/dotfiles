@@ -149,6 +149,7 @@ function ssh_trap() {
   local window_index="$(tmux display-message -p '#I')"
 
   tmux rename-window "SSH ($ssh_session)"
+  rename_pane "SSH ($ssh_session)"
 
   ssh_exec $*
 
@@ -156,6 +157,7 @@ function ssh_trap() {
 
   # Restore original window name
   tmux rename-window -t "$window_index" "$window_name"
+  rename_pane "$window_name"
 
   return $ec
 }
@@ -295,6 +297,7 @@ function tmux_win_rename() {
   cur_dir=$(pwd | sed "s|^$HOME|~|" 2> /dev/null | sed 's:\(\.\?[^/]\)[^/]*/:\1/:g')
 
   tmux rename-window "$cur_dir"
+  rename_pane "$cur_dir"
 }
 
 function history_find() {
@@ -395,7 +398,7 @@ function ssh_multi() {
 
   for conn in "$@" ; do
     tmux split-window "ssh $SSH_QUIET_OPTS $conn"
-    tmux set-option -p @custom_pane_title "$conn"
+    rename_pane "$conn"
   done
 
   tmux select-layout even-vertical
@@ -408,6 +411,10 @@ function cat_flat() {
   fi
 
   cat $1 | tr '\n' ' ' ; echo ""
+}
+
+function rename_pane() {
+  tmux set-option -p @custom_pane_title "$*"
 }
 
 function print_error() {
