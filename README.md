@@ -13,21 +13,21 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | Name | Description |
 |------|-------------|
 | `tx` | Start or attach to TMUX session |
-| `txn` | Rename current pane |
-| `sshk` | `ssh` command without checking and saving host key |
-| `ssht` | `sshk` to many hosts at once (_requires TMUX session_) |
-| `scpk` | `scp` command without checking and saving host key |
-| `g` | `grep` shortcut |
-| `e` | Editor shortcut |
-| `d` | Docker shortcut |
-| `dr` | Docker `run` shortcut |
-| `de` | Docker `exec` shortcut |
-| `hf` | `grep` over zsh history |
+| `txn {name}` | Rename current pane |
 | `txc` | Rename current TMUX window to short path to current directory |
+| `sshk …` | `ssh` command without checking and saving host key |
+| `ssht …` | `sshk` to many hosts at once (_requires TMUX session_) |
+| `scpk …` | `scp` command without checking and saving host key |
+| `e` | Editor (_nano_) shortcut |
+| `g …` | `grep` shortcut |
+| `d …` | Docker shortcut |
+| `dr …` | Docker `run` shortcut |
+| `de …` | Docker `exec` shortcut |
+| `hf …` | `grep` over zsh history |
 | `goc` | Create HTML coverage report for Go sources |
-| `gcl` | Clone repository with Go sources |
-| `bkp` | Create backup for file or directory |
-| `flat` | Print flatten list of records |
+| `gcl {org}/{repo}` | Clone repository with Go sources |
+| `bkp {file}` | Create backup for file or directory |
+| `flat {file}` | Print flatten list of records |
 | `git release {version}` | Add signed version tag for the latest commit to the master branch |
 | `git tag-delete {tag}` | Delete tag everywhere |
 | `git tag-update {tag}` | Update tag to the latest commit |

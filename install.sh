@@ -7,7 +7,7 @@ set -e
 
 ################################################################################
 
-VERSION="2.3.1"
+VERSION="2.3.2"
 
 ################################################################################
 
@@ -144,12 +144,6 @@ checkDeps() {
 doDepsInstall() {
   local deps=""
 
-  if ! isRoot ; then
-    sudo $pkg_manager clean expire-cache &> /dev/null
-  else
-    $pkg_manager clean expire-cache &> /dev/null
-  fi
-
   if ! rpm -q kaos-repo &> /dev/null ; then
     if ! isRoot ; then
       sudo $pkg_manager install -y "https://yum.kaos.st/kaos-repo-latest.el${dist}.noarch.rpm"
@@ -189,9 +183,11 @@ doDepsInstall() {
   separator
 
   if ! isRoot ; then
+    sudo $pkg_manager clean expire-cache &> /dev/null
     # shellcheck disable=SC2086
     sudo $pkg_manager -y install $deps
   else
+    $pkg_manager clean expire-cache &> /dev/null
     # shellcheck disable=SC2086
     $pkg_manager -y install $deps
   fi

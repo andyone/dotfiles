@@ -50,7 +50,6 @@ export PATH=$HOME/.bin:/usr/local/bin:$PATH
 
 # Aliases
 alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
-alias txn="tmux set-option -p @custom_pane_title"
 alias sshk="ssh $SSH_QUIET_OPTS"
 alias scpk="scp $SSH_QUIET_OPTS"
 alias c="clear"
@@ -63,6 +62,7 @@ alias de="docker exec -it"
 # Custom functions
 alias hf="history_find"
 alias txc="tmux_win_rename"
+alias txn="rename_pane"
 alias goc="go_cover"
 alias gcl="go_clone"
 alias bkp="create_backup"
