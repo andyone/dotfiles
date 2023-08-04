@@ -61,7 +61,7 @@ alias de="docker exec -it"
 
 # Custom functions
 alias hf="history_find"
-alias txc="tmux_win_rename"
+alias txc="tmux_win_to_path"
 alias txn="rename_pane"
 alias goc="go_cover"
 alias gcl="go_clone"
@@ -126,7 +126,7 @@ function cd_trap() {
     return $?
   fi
 
-  tmux_win_rename
+  tmux_win_to_path
 }
 
 function ssh_trap() {
@@ -142,6 +142,7 @@ function ssh_trap() {
 
   # Window has custom name, not path, so do not rename window
   if [[ "$window_name_fs" != "/" && "$window_name_fs" != "~" ]] ; then
+    rename_pane "SSH ($ssh_session)"
     ssh_exec $*
     return $?
   fi
@@ -289,17 +290,6 @@ function git_undo() {
   return $?
 }
 
-function tmux_win_rename() {
-  if [[ -z "$TMUX" ]] ; then
-    return 1
-  fi
-
-  cur_dir=$(pwd | sed "s|^$HOME|~|" 2> /dev/null | sed 's:\(\.\?[^/]\)[^/]*/:\1/:g')
-
-  tmux rename-window "$cur_dir"
-  rename_pane "$cur_dir"
-}
-
 function history_find() {
   if [[ $# -eq 0 ]] ; then
     echo "Usage: hf {string}"
@@ -411,6 +401,18 @@ function cat_flat() {
   fi
 
   cat $1 | tr '\n' ' ' ; echo ""
+}
+
+function tmux_win_to_path() {
+  if [[ -z "$TMUX" ]] ; then
+    return 1
+  fi
+
+  tmux rename-window "$(get_current_dir_short)"
+}
+
+function get_current_dir_short() {
+  pwd | sed "s|^$HOME|~|" 2> /dev/null | sed 's:\(\.\?[^/]\)[^/]*/:\1/:g'
 }
 
 function rename_pane() {
