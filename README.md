@@ -54,6 +54,7 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | <kbd>CTRL</kbd>+<kbd>T</kbd> | Toggle panes names |
 | <kbd>CTRL</kbd>+<kbd>Z</kbd> | Toggle pane zoom |
 | <kbd>CTRL</kbd>+<kbd>Q</kbd> | Show session tree |
+| <kbd>CTRL</kbd>+<kbd>L</kbd> | Clear terminal |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>T</kbd> | Show current time |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>С</kbd> | Create new window |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>R</kbd> | Rearrage windows |
@@ -73,6 +74,12 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | <kbd>ALT</kbd>+<kbd>↑</kbd> | Select upper pane |
 | <kbd>ALT</kbd>+<kbd>↓</kbd> | Select bottom pane |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>Space</kbd> | Set panes layout |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>ALT</kbd>+<kbd>1</kbd> | Set panes layout to layout 1 |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>ALT</kbd>+<kbd>2</kbd> | Set panes layout to layout 2 |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>ALT</kbd>+<kbd>3</kbd> | Set panes layout to layout 3 |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>ALT</kbd>+<kbd>4</kbd> | Set panes layout to layout 4 |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>ALT</kbd>+<kbd>5</kbd> | Set panes layout to layout 5 |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>ALT</kbd>+<kbd>6</kbd> | Set panes layout to layout 6 |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>PgUp</kbd> | Scroll up |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>PgDn</kbd> | Scroll down |
 | <kbd>F1</kbd> | Select window #1 |
