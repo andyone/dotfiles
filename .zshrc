@@ -373,7 +373,7 @@ function create_backup() {
 
 function ssh_multi() {
   if [[ $# -lt 2 ]] ; then
-    echo "Usage: $0 ip1 ip2…"
+    echo "Usage: ssht host1 host2 host3…"
     return 0
   fi
 
@@ -382,12 +382,12 @@ function ssh_multi() {
     return 1
   fi
 
-  tmux new-window -n "SSH ($#)" "ssh $SSH_QUIET_OPTS $1"
+  tmux new-window -n "SSH ($#)" "ssh $SSH_QUIET_OPTS $1 ; sleep 5"
 
   shift 1
 
   for conn in "$@" ; do
-    tmux split-window "ssh $SSH_QUIET_OPTS $conn"
+    tmux split-window "ssh $SSH_QUIET_OPTS $conn ; sleep 5"
     rename_pane "$conn"
   done
 
@@ -396,7 +396,7 @@ function ssh_multi() {
 
 function cat_flat() {
   if [[ $# -lt 2 ]] ; then
-    echo "Usage: $0 file"
+    echo "Usage: flat file"
     return 0
   fi
 
