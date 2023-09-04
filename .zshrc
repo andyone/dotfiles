@@ -52,6 +52,7 @@ export PATH=$HOME/.bin:/usr/local/bin:$PATH
 alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
 alias sshk="ssh $SSH_QUIET_OPTS"
 alias scpk="scp $SSH_QUIET_OPTS"
+alias dnl="curl -ZOL --max-redirs 3 --parallel-max 5 --styled-output"
 alias c="clear"
 alias g="grep --color=auto"
 alias e="$EDITOR"
@@ -383,6 +384,7 @@ function ssh_multi() {
   fi
 
   tmux new-window -n "SSH ($#)" "ssh $SSH_QUIET_OPTS $1 ; sleep 5"
+  rename_pane "$1"
 
   shift 1
 

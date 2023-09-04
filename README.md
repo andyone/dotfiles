@@ -18,6 +18,7 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | `sshk …` | `ssh` command without checking and saving host key |
 | `ssht …` | `sshk` to many hosts at once (_requires TMUX session_) |
 | `scpk …` | `scp` command without checking and saving host key |
+| `dnl …` | Download one or more files using `curl` |
 | `e` | Editor (_nano_) shortcut |
 | `g …` | `grep` shortcut |
 | `d …` | Docker shortcut |
