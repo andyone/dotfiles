@@ -26,6 +26,12 @@ source $ZSH/oh-my-zsh.sh
 
 ################################################################################
 
+setopt nocaseglob # ignore case
+setopt correct # correct spelling mistakes
+setopt auto_cd # if there is no app with given name, try to cd to it
+
+################################################################################
+
 SSH_QUIET_OPTS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet"
 
 ################################################################################
@@ -46,6 +52,7 @@ export GOPATH=~/projects/gocode
 export GOBIN=~/projects/gocode/bin
 export PATH=~/projects/gocode/bin:$PATH
 
+# Add local bin dir to PATH
 export PATH=$HOME/.bin:/usr/local/bin:$PATH
 
 # Aliases
