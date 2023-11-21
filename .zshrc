@@ -37,7 +37,7 @@ SSH_QUIET_OPTS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o L
 ################################################################################
 
 # Export env vars
-export PAGER="less"
+export PAGER="more"
 export LESS="-MQR"
 export VISUAL="nano"
 export EDITOR="nano"
