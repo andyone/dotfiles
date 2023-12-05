@@ -198,6 +198,10 @@ function git_release() {
   fi
 
   if [[ $(\git rev-parse --abbrev-ref HEAD 2>/dev/null) != "master" ]] ; then
+    if ! \git push ; then
+      return 1
+    fi
+
     if ! \git checkout master ; then
       return 1
     fi
