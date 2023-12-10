@@ -318,7 +318,7 @@ function go_cover() {
   fi
 
   if which htmlcov &> /dev/null ; then
-    htmlcov -r cover.out
+    htmlcov -R cover.out
   else
     go tool cover -html=cover.out -o coverage.html
     rm -f cover.out
