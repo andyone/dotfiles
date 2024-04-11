@@ -91,7 +91,7 @@ banner() {
   show " ░░░██║░░██║██║░░██║░░░██║░░░██╔══╝░░██║██║░░░░░██╔══╝░░░╚═══██╗" $GREY
   show " ██╗██████╔╝╚█████╔╝░░░██║░░░██║░░░░░██║███████╗███████╗██████╔╝" $GREY
   show " ╚═╝╚═════╝░░╚════╝░░░░╚═╝░░░╚═╝░░░░░╚═╝╚══════╝╚══════╝╚═════╝░" $GREY
-  show "                                  by @andyone | version: $VERSION" $DARK
+  show "                                    by @andyone | version: $VERSION" $DARK
   show ""
 
   sleep 3
