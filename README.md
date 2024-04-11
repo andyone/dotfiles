@@ -95,5 +95,6 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | <kbd>F10</kbd> | Select window #10 |
 | <kbd>F11</kbd> | Select window #11 |
 | <kbd>F12</kbd> | Kill current window |
+| <kbd>CTRL</kbd>+<kbd>R</kbd> | History search with [fzf](https://github.com/junegunn/fzf) |
 
 _For function keys support in XShell 5+ you should use custom [mappings file](xshell.tkm)._
