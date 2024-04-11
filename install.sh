@@ -7,7 +7,7 @@ set -e
 
 ################################################################################
 
-VERSION="2.4.0"
+VERSION="2.4.1"
 
 ################################################################################
 
@@ -45,7 +45,7 @@ CL_BL_GREY="\e[1;${GREY};49m"
 ################################################################################
 
 GH_CONTENT="https://raw.githubusercontent.com"
-REPOSITORY="$GH_CONTENT/andyone/dotfiles/master/"
+REPOSITORY="$GH_CONTENT/andyone/dotfiles/master"
 OMZ_INSTALL="$GH_CONTENT/robbyrussell/oh-my-zsh/master/tools/install.sh"
 
 ################################################################################
@@ -325,7 +325,7 @@ download() {
   local rnd http_code
 
   rnd=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w8 | head -n1)
-  http_code=$(curl -s -L -w "%{http_code}" -o "$dir/$name" "$REPOSITORY/${name}?r${rnd}")
+  http_code=$(curl -sL -m 10 -w "%{http_code}" -o "$dir/$name" "$REPOSITORY/${name}?r${rnd}")
 
   if [[ "$http_code" != "200" ]] ; then
     return 1
