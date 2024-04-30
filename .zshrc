@@ -13,8 +13,8 @@ export GPG_TTY=$(tty)
 # Set default theme to KAOS
 ZSH_THEME="kaos"
 
-# Enable git plugin
-plugins=(git)
+# Create array with plugins
+plugins=()
 
 # Enable fzf plugin if fzf is installed
 if [[ -d "$HOME/.fzf" ]] ; then
@@ -24,6 +24,9 @@ fi
 
 # Disable automatic oh-my-zsh update
 zstyle ':omz:update' mode disabled
+
+# Enable oh-my-zsh
+source $ZSH/oh-my-zsh.sh
 
 ################################################################################
 
@@ -474,6 +477,3 @@ if [[ -f $HOME/.zshrc.local ]] ; then
 fi
 
 ################################################################################
-
-# Enable oh-my-zsh
-source $ZSH/oh-my-zsh.sh
