@@ -80,7 +80,6 @@ export PATH=~/projects/gocode/bin:$PATH
 export PATH=$HOME/.bin:/usr/local/bin:$PATH
 
 # Aliases
-alias tx="TERM=screen-256color tmux attach 2>/dev/null || TERM=screen-256color tmux new -n HOME"
 alias sshk="ssh $SSH_QUIET_OPTS"
 alias scpk="scp $SSH_QUIET_OPTS"
 alias dl="curl -ZL --max-redirs 3 --parallel-max 5 --remote-name-all"
@@ -106,6 +105,13 @@ alias git="git_trap"
 alias cd="cd_trap"
 alias ssh="ssh_trap"
 alias scp="scp_trap"
+
+# Use screen-256color on CentOS 7 for fix colors rendering (can break copy & paste)
+if [[ $(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5) == "7" ]] ; then
+  alias tx="TERM=screen-256color tmux attach 2>/dev/null || TERM=screen-256color tmux new -n HOME"
+else
+  alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
+fi
 
 ################################################################################
 
