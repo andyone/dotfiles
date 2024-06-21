@@ -4,3 +4,68 @@ set line-graphics = utf-8
 # Custom date format in main view
 set main-view-date = custom
 set main-view-date-format = "%Y-%m-%d %H:%M"
+
+# Custom color scheme
+color cursor       220 235 bold
+color date         242 default
+color author       default default bold
+color main-head    203 default
+color status       242 default
+color title-focus  default 238 bold
+color title-blur   white 235
+
+color "diff --"             240 default
+color "index "              240 default
+color "old file mode "      240 default
+color "new file mode "      240 default
+color "deleted file mode "  240 default
+color "copy from "          240 default
+color "copy to "            240 default
+color "rename from "        240 default
+color "rename to "          240 default
+color "similarity "         240 default
+color "dissimilarity "      240 default
+
+color "---"   245 default bold
+color "--- "  245 default bold
+color "+++ "  245 default bold
+color "@@"    72 default
+
+color "\ No newline at end of file" black 98
+
+color "Author: "          white default bold
+color "Commit: "          white default bold
+color "Tagger: "          white default bold
+color "Merge: "           white default bold
+color "Date: "            white default bold
+color "AuthorDate: "      white default bold
+color "CommitDate: "      white default bold
+color "TaggerDate: "      white default bold
+color "Refs: "            white default bold
+color "Reflog: "          white default bold
+color "Reflog message: "  white default bold
+
+color "stash@{"     white default bold
+color "commit "     white default bold
+color "parent "     white default bold
+color "tree "       white default bold
+color "committer "  white default bold
+
+color "    Signed-off-by:"      white default bold
+color "    Acked-by:"           white default bold
+color "    Reviewed-by:"        white default bold
+color "    Helped-by:"          white default bold
+color "    Reported-by:"        white default bold
+color "    Mentored-by:"        white default bold
+color "    Suggested-by:"       white default bold
+color "    Cc:"                 white default bold
+color "    Noticed-by:"         white default bold
+color "    Tested-by:"          white default bold
+color "    Improved-by:"        white default bold
+color "    Thanks-to:"          white default bold
+color "    Based-on-patch-by:"  white default bold
+color "    Contributions-by:"   white default bold
+color "    Co-authored-by:"     white default bold
+color "    Requested-by:"       white default bold
+color "    Original-patch-by:"  white default bold
+color "    Inspired-by:"        white default bold
