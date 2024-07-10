@@ -227,12 +227,14 @@ function git_release() {
     return 0
   fi
 
-  if [[ $(\git rev-parse --abbrev-ref HEAD 2>/dev/null) != "master" ]] ; then
+  local defBranch=$(\git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+
+  if [[ $(\git rev-parse --abbrev-ref HEAD 2>/dev/null) != "$defBranch" ]] ; then
     if ! \git push ; then
       return 1
     fi
 
-    if ! \git checkout master ; then
+    if ! \git checkout "$defBranch" ; then
       return 1
     fi
   fi
