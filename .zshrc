@@ -72,6 +72,7 @@ export COLORTERM="truecolor"
 export GOPROXY=direct
 export GO111MODULE=auto
 export GOTOOLCHAIN=local
+export CGO_ENABLED=0
 export GOPATH=~/projects/gocode
 export GOBIN=~/projects/gocode/bin
 export PATH=~/projects/gocode/bin:$PATH
