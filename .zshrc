@@ -90,7 +90,6 @@ alias e="$EDITOR"
 alias d="docker"
 alias dr="docker run --rm -it"
 alias de="docker exec -it"
-alias ll="ls -lhv"
 
 # Custom functions
 alias hf="history_find"
@@ -101,6 +100,7 @@ alias gcl="go_clone"
 alias bkp="create_backup"
 alias ssht="ssh_multi"
 alias flat="cat_flat"
+alias ll="ls_ext"
 
 # Traps
 alias git="git_trap"
@@ -117,7 +117,17 @@ fi
 
 ################################################################################
 
-function git_trap {
+function ls_ext() {
+  if [[ $# -eq 0 ]] ; then
+    ls -lhv --color=always | sed 's/ -> / → /g'
+  else
+    ls -lhv --color=always "$@" | sed 's/ -> / → /g'
+  fi
+
+  return $?
+}
+
+function git_trap() {
   if [[ "$1" == "release" ]] ; then
     shift
     git_release $*
