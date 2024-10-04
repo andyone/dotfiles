@@ -90,6 +90,7 @@ alias e="$EDITOR"
 alias d="docker"
 alias dr="docker run --rm -it"
 alias de="docker exec -it"
+alias ll="ls -lhv"
 
 # Custom functions
 alias hf="history_find"
