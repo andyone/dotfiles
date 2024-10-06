@@ -101,6 +101,7 @@ alias bkp="create_backup"
 alias ssht="ssh_multi"
 alias flat="cat_flat"
 alias ll="ls_ext"
+alias l="ls_ext"
 
 # Traps
 alias git="git_trap"
