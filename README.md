@@ -19,7 +19,8 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | `ssht …` | `sshk` to many hosts at once (_requires TMUX session_) |
 | `scpk …` | `scp` command without checking and saving host key |
 | `dl …` | Download one or more files using `curl` |
-| `e` | Editor (_nano_) shortcut |
+| `e …` | Editor (_nano_) shortcut |
+| `b …` | [`bat`](https://github.com/sharkdp/bat) shortcut |
 | `g …` | `grep` shortcut |
 | `d …` | Docker shortcut |
 | `dr …` | Docker `run` shortcut |
