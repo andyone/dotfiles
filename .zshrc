@@ -33,7 +33,7 @@ source $ZSH/oh-my-zsh.sh
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
 SAVEHIST=10000000
-HISTORY_IGNORE="(ls|ll|cd|pwd|exit|export)*"
+HISTORY_IGNORE="(ls|ll|lll|llg|eza|cd|pwd|exit|export)*"
 
 setopt APPEND_HISTORY        # Append to history file (Default)
 setopt EXTENDED_HISTORY      # Write the history file in the ':start:elapsed;command' format
@@ -91,6 +91,9 @@ alias b="bat"
 alias d="docker"
 alias dr="docker run --rm -it"
 alias de="docker exec -it"
+alias lll="eza -l -a --git"
+alias llg="eza -l -a --git-repos"
+alias k="kubectl"
 
 # Custom functions
 alias hf="history_find"
@@ -110,12 +113,7 @@ alias cd="cd_trap"
 alias ssh="ssh_trap"
 alias scp="scp_trap"
 
-# Use screen-256color on CentOS 7 for fix colors rendering (can break copy & paste)
-if [[ $(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5) == "7" ]] ; then
-  alias tx="TERM=screen-256color tmux attach 2>/dev/null || TERM=screen-256color tmux new -n HOME"
-else
-  alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
-fi
+alias tx="tmux attach 2>/dev/null || tmux new -n HOME"
 
 ################################################################################
 

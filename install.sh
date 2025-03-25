@@ -7,7 +7,7 @@ set -e
 
 ################################################################################
 
-VERSION="2.4.9"
+VERSION="2.5.0"
 
 ################################################################################
 
@@ -55,7 +55,6 @@ themes=("kaos-lite.zsh-theme" "kaos.zsh-theme")
 
 ################################################################################
 
-pkg_manager=""
 dist=""
 
 ################################################################################
@@ -106,12 +105,10 @@ prepare() {
 
   dist=$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5)
 
-  case "$dist" in
-    "7")       pkg_manager="/bin/yum" ;;
-    "8" | "9") pkg_manager="/bin/dnf" ;;
-    *)         error "Unknown or unsupported OS"
-               has_errors=true ;;
-  esac
+  if [[ "$dist" != "8" && "$dist" != "9" ]] ; then
+    error "Unknown or unsupported OS"
+    has_errors=true
+  fi
 
   if [[ $has_errors ]] ; then
     exit 1
@@ -146,9 +143,9 @@ doDepsInstall() {
 
   if ! rpm -q kaos-repo &> /dev/null ; then
     if ! isRoot ; then
-      sudo $pkg_manager install -y "https://yum.kaos.st/kaos-repo-latest.el${dist}.noarch.rpm"
+      sudo dnf install -y "https://pkgs.kaos.st/kaos-repo-latest.el${dist}.noarch.rpm"
     else
-      $pkg_manager install -y "https://yum.kaos.st/kaos-repo-latest.el${dist}.noarch.rpm"
+      dnf install -y "https://pkgs.kaos.st/kaos-repo-latest.el${dist}.noarch.rpm"
     fi
   fi
 
@@ -183,13 +180,13 @@ doDepsInstall() {
   separator
 
   if ! isRoot ; then
-    sudo $pkg_manager clean expire-cache &> /dev/null
+    sudo dnf clean expire-cache &> /dev/null
     # shellcheck disable=SC2086
-    sudo $pkg_manager -y install $deps
+    sudo dnf -y install $deps
   else
-    $pkg_manager clean expire-cache &> /dev/null
+    dnf clean expire-cache &> /dev/null
     # shellcheck disable=SC2086
-    $pkg_manager -y install $deps
+    dnf -y install $deps
   fi
 
   # shellcheck disable=SC2181
