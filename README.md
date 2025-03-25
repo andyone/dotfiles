@@ -1,6 +1,6 @@
 ## `.dotfiles`
 
-A set of zsh, git, tig, and tmux configuration files.
+A set of `zsh`, `git`, `tig`, and `tmux` configuration files.
 
 ### Installation
 
@@ -25,6 +25,9 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | `d …` | Docker shortcut |
 | `dr …` | Docker `run` shortcut |
 | `de …` | Docker `exec` shortcut |
+| `k …` | `kubectl` shortcut |
+| `lll …` | List files and directories using [`eza`](https://github.com/eza-community/eza) |
+| `llg …` | List files and directories using [`eza`](https://github.com/eza-community/eza) with `git` status |
 | `hf …` | `grep` over zsh history |
 | `goc` | Create HTML coverage report for Go sources |
 | `gcl {org}/{repo}` | Clone repository with Go sources |
