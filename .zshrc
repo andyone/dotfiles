@@ -106,6 +106,7 @@ alias ssht="ssh_multi"
 alias flat="cat_flat"
 alias ll="ls_ext"
 alias l="ls_ext"
+alias kn="k8s_namespace"
 
 # Traps
 alias git="git_trap"
@@ -414,6 +415,11 @@ function go_clone() {
 }
 
 function create_backup() {
+  if [[ $# -eq 0 ]] ; then
+    echo "Usage: bkp {file}"
+    return 0
+  fi
+
   if ! cp -rp "$1" "$1.bak" ; then
     return 1
   fi
@@ -453,11 +459,22 @@ function ssh_multi() {
 
 function cat_flat() {
   if [[ $# -lt 2 ]] ; then
-    echo "Usage: flat file"
+    echo "Usage: flat {file}"
     return 0
   fi
 
   cat $1 | tr '\n' ' ' ; echo ""
+}
+
+function k8s_namespace() {
+  if [[ $# -eq 0 ]] ; then
+    kubectl get ns -o 'jsonpath={.items[*].metadata.name}' | tr ' ' '\n' | grep -vE '(kube-.*|yandex-.*)'
+    return $?
+  fi
+
+  kubectl config set-context --current --namespace="$1"
+
+  return $?
 }
 
 function tmux_win_to_path() {
