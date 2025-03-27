@@ -468,7 +468,7 @@ function cat_flat() {
 
 function k8s_namespace() {
   if [[ $# -eq 0 ]] ; then
-    kubectl get ns -o 'jsonpath={.items[*].metadata.name}' | tr ' ' '\n' | grep -vE '(kube-.*|yandex-.*)'
+    kubectl get ns -o 'jsonpath={.items[*].metadata.name}' | tr ' ' '\n' | grep -vE '(kube-.*|yandex-.*)' | sed "s/$cur_ns/$cur_ns ←/"
     return $?
   fi
 
