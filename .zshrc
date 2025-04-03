@@ -93,7 +93,9 @@ alias dr="docker run --rm -it"
 alias de="docker exec -it"
 alias lll="eza -l -a --git"
 alias llg="eza -l -a --git-repos"
+
 alias k="kubectl"
+alias kd="kubectl describe"
 
 # Custom functions
 alias hf="history_find"
@@ -107,6 +109,8 @@ alias flat="cat_flat"
 alias ll="ls_ext"
 alias l="ls_ext"
 alias kn="k8s_namespace"
+alias kl="k8s_log"
+alias ks="k8s_shell"
 
 # Traps
 alias git="git_trap"
@@ -473,6 +477,42 @@ function k8s_namespace() {
   fi
 
   kubectl config set-context --current --namespace="$1"
+
+  return $?
+}
+
+function k8s_log() {
+  if [[ $# -eq 0 ]] ; then
+    echo "Usage: kl {resource} {-f|--follow}"
+    return 0
+  fi
+
+  if [[ -f "$HOME/.bin/lj" ]] ; then
+    if [[ "$2" == "-f" || "$2" == "--follow" ]] ; then
+      kubectl logs "$1" -f | lj -F
+      return $?
+    else
+      kubectl logs "$1" | lj -P
+      return $?
+    fi
+  else
+    if [[ "$2" == "-f" || "$2" == "--follow" ]] ; then
+      kubectl logs "$1" -f
+      return $?
+    else
+      kubectl logs "$1"
+      return $?
+    fi
+  fi
+}
+
+function k8s_shell() {
+  if [[ $# -eq 0 ]] ; then
+    echo "Usage: ks {pod}"
+    return 0
+  fi
+
+  kubectl exec -it "$1" -- /bin/sh
 
   return $?
 }

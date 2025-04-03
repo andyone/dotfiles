@@ -26,7 +26,10 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | `dr …` | Docker `run` shortcut |
 | `de …` | Docker `exec` shortcut |
 | `k …` | `kubectl` shortcut |
+| `kd …` | `kubectl describe` shortcut |
 | `kn {namespace}` | Set k8s namespace |
+| `kl {resource} {-f|--follow}` | View k8s resource logs |
+| `ks {pod}` | Connect to k8s pod |
 | `lll …` | List files and directories using [`eza`](https://github.com/eza-community/eza) |
 | `llg …` | List files and directories using [`eza`](https://github.com/eza-community/eza) with `git` status |
 | `hf …` | `grep` over zsh history |
