@@ -66,10 +66,10 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | <kbd>CTRL</kbd>+<kbd>L</kbd> | Clear terminal |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>T</kbd> | Show current time |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>С</kbd> | Create new window |
-| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>R</kbd> | Rearrage windows |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>R</kbd> | Rearrange windows |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>W</kbd> | List windows |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>\|</kbd> | Split window vertically |
-| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>\-</kbd> | Split window horizontaly |
+| <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>\-</kbd> | Split window horizontally |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>,</kbd> | Set window name |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>N</kbd> | Next window |
 | <kbd>CTRL</kbd>+<kbd>B</kbd> → <kbd>P</kbd> | Previous window |

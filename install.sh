@@ -75,7 +75,7 @@ main() {
     doInstall
   popd &> /dev/null
 
-  show "\nAll done! Enjoy your dotfiles expirience!\n" $GREEN
+  show "\nAll done! Enjoy your dotfiles experience!\n" $GREEN
 }
 
 # Print banner
