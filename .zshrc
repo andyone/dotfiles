@@ -471,48 +471,85 @@ function cat_flat() {
 }
 
 function k8s_namespace() {
+  local ns="$1"
+  local ec
+
   if [[ $# -eq 0 ]] ; then
-    kubectl get ns -o 'jsonpath={.items[*].metadata.name}' | tr ' ' '\n' | grep -vE '(kube-.*|yandex-.*)' | sed "s/$cur_ns/$cur_ns ←/"
-    return $?
+    if [[ -f "$HOME/.bin/fzf" || -d "$HOME/.fzf" ]] ; then
+      ns=$(kubectl get ns | grep -vE '(kube|yandex)' | fzf --header-lines=1 --height 20% --reverse | awk '{print $1}')
+      [[ -z "$ns" ]] && return 1
+    else
+      echo "Usage: kn {namespace|-}"
+      return 0
+    fi
   fi
 
-  kubectl config set-context --current --namespace="$1"
+  local cur_ns
 
-  return $?
-}
-
-function k8s_log() {
-  if [[ $# -eq 0 ]] ; then
-    echo "Usage: kl {resource} {-f|--follow}"
+  if [[ "$ns" == "-" ]] ; then
+    cur_ns=$(kubectl config view --minify --output 'jsonpath={..namespace}')
+    kubectl get ns -o 'jsonpath={.items[*].metadata.name}' | tr ' ' '\n' | grep -vE '(kube-|yandex-)' | sed "s#$cur_ns#$cur_ns ←—#"
     return 0
   fi
 
+  if kubectl config set-context --current --namespace="$ns" ; then
+    echo "Current namespace is set to \"$ns\"."
+  fi
+
+  return 1
+}
+
+function k8s_log() {
+  local resource="$1"
+  local follow
+
+  if [[ "$1" == "-f" || "$2" == "-f" ]] ; then
+    follow=true
+  fi
+
+  if [[ $# -eq 0 ]] ; then
+    if [[ -f "$HOME/.bin/fzf" || -d "$HOME/.fzf" ]] ; then
+      resource=$(kubectl get pods | fzf --header-lines=1 --height 20% --reverse | awk '{print $1}')
+      [[ -z "$resource" ]] && return 1
+    else
+      echo "Usage: kl {resource} {-f}"
+      return 0
+    fi
+  fi
+
   if [[ -f "$HOME/.bin/lj" ]] ; then
-    if [[ "$2" == "-f" || "$2" == "--follow" ]] ; then
-      kubectl logs "$1" -f | lj -F
+    if [[ -n "$follow" ]] ; then
+      kubectl logs "$resource" -f | lj -F
       return $?
     else
-      kubectl logs "$1" | lj -P
+      kubectl logs "$resource" | lj -P
       return $?
     fi
   else
-    if [[ "$2" == "-f" || "$2" == "--follow" ]] ; then
-      kubectl logs "$1" -f
+    if [[ -n "$follow" ]] ; then
+      kubectl logs "$resource" -f
       return $?
     else
-      kubectl logs "$1"
+      kubectl logs "$resource"
       return $?
     fi
   fi
 }
 
 function k8s_shell() {
+  local pod="$1"
+
   if [[ $# -eq 0 ]] ; then
-    echo "Usage: ks {pod}"
-    return 0
+    if [[ -f "$HOME/.bin/fzf" || -d "$HOME/.fzf" ]] ; then
+      pod=$(kubectl get pods --field-selector=status.phase=Running | fzf --header-lines=1 --height 20% --reverse | awk '{print $1}')
+      [[ -z "$pod" ]] && return 1
+    else
+      echo "Usage: ks {pod}"
+      return 0
+    fi
   fi
 
-  kubectl exec -it "$1" -- /bin/sh
+  kubectl exec -it "$pod" -- /bin/sh
 
   return $?
 }
