@@ -503,7 +503,10 @@ function k8s_log() {
   local resource="$1"
   local follow
 
-  if [[ "$1" == "-f" || "$2" == "-f" ]] ; then
+  if [[ "$2" == "-f" ]] ; then
+    follow=true
+  else if [[ "$1" == "-f" ]] ; then
+    resource="$2"
     follow=true
   fi
 
