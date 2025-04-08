@@ -477,7 +477,10 @@ function k8s_namespace() {
   if [[ $# -eq 0 ]] ; then
     if [[ -f "$HOME/.bin/fzf" || -d "$HOME/.fzf" ]] ; then
       ns=$(kubectl get ns | grep -vE '(kube|yandex)' | fzf --header-lines=1 --height 20% --reverse | awk '{print $1}')
-      [[ -z "$ns" ]] && return 1
+
+      if [[ -z "$ns" ]] ; then
+        return 1
+      fi
     else
       echo "Usage: kn {namespace|-}"
       return 0
@@ -505,7 +508,7 @@ function k8s_log() {
 
   if [[ "$2" == "-f" ]] ; then
     follow=true
-  else if [[ "$1" == "-f" ]] ; then
+  elif [[ "$1" == "-f" ]] ; then
     resource="$2"
     follow=true
   fi
@@ -513,7 +516,14 @@ function k8s_log() {
   if [[ $# -eq 0 ]] ; then
     if [[ -f "$HOME/.bin/fzf" || -d "$HOME/.fzf" ]] ; then
       resource=$(kubectl get pods | fzf --header-lines=1 --height 20% --reverse | awk '{print $1}')
-      [[ -z "$resource" ]] && return 1
+
+      if [[ -z "$resource" ]] ; then
+        return 1
+      fi
+
+      if [[ $(kubectl get pod "$resource" -o jsonpath='{.status.phase}') == "Running" ]] ; then
+        follow=1
+      fi
     else
       echo "Usage: kl {resource} {-f}"
       return 0
@@ -544,8 +554,11 @@ function k8s_shell() {
 
   if [[ $# -eq 0 ]] ; then
     if [[ -f "$HOME/.bin/fzf" || -d "$HOME/.fzf" ]] ; then
-      pod=$(kubectl get pods --field-selector=status.phase=Running | fzf --header-lines=1 --height 20% --reverse | awk '{print $1}')
-      [[ -z "$pod" ]] && return 1
+      pod=$(kubectl get pods --field-selector='status.phase=Running' | fzf --header-lines=1 --height 20% --reverse | awk '{print $1}')
+
+      if [[ -z "$pod" ]] ; then
+        return 1
+      fi
     else
       echo "Usage: ks {pod}"
       return 0
