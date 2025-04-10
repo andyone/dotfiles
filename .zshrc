@@ -503,49 +503,44 @@ function k8s_namespace() {
 }
 
 function k8s_log() {
-  local resource="$1"
-  local follow
+  local resource
 
-  if [[ "$2" == "-f" ]] ; then
-    follow=true
-  elif [[ "$1" == "-f" ]] ; then
-    resource="$2"
-    follow=true
+  if [[ $# -ne 0 ]] ; then
+    if kubectl get pod "$1" &> /dev/null ; then
+      resource="$1"
+      shift
+    fi
   fi
 
-  if [[ $# -eq 0 ]] ; then
+  if [[ "${1:0:1}" == "-" || -z "$resource" ]] ; then
     if [[ -f "$HOME/.bin/fzf" || -d "$HOME/.fzf" ]] ; then
       resource=$(kubectl get pods | fzf --header-lines=1 --height 20% --reverse | awk '{print $1}')
 
       if [[ -z "$resource" ]] ; then
         return 1
       fi
-
-      if [[ $(kubectl get pod "$resource" -o jsonpath='{.status.phase}') == "Running" ]] ; then
-        follow=1
-      fi
     else
-      echo "Usage: kl {resource} {-f}"
+      echo "Usage: kl {resource} {option}…"
       return 0
     fi
   fi
 
+  if [[ -z "$resource" && "${1:0:1}" != "-" ]] ; then
+    resource="$1"
+    shift
+  fi
+
   if [[ -f "$HOME/.bin/lj" ]] ; then
-    if [[ -n "$follow" ]] ; then
-      kubectl logs "$resource" -f | lj -F
+    if [[ $@ =~ (-F|--follow) ]] ; then
+      kubectl logs "$resource" -f | lj $@
       return $?
     else
-      kubectl logs "$resource" | lj -P
+      kubectl logs "$resource" | lj $@
       return $?
     fi
   else
-    if [[ -n "$follow" ]] ; then
-      kubectl logs "$resource" -f
-      return $?
-    else
-      kubectl logs "$resource"
-      return $?
-    fi
+    kubectl logs "$resource" $@
+    return $?
   fi
 }
 
