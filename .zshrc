@@ -503,7 +503,7 @@ function k8s_namespace() {
 }
 
 function k8s_log() {
-  local resource
+  local resource follow
 
   if [[ $# -ne 0 ]] ; then
     if kubectl get pod "$1" &> /dev/null ; then
@@ -519,6 +519,10 @@ function k8s_log() {
       if [[ -z "$resource" ]] ; then
         return 1
       fi
+
+      if [[ $(kubectl get pod "$resource" -o jsonpath='{.status.phase}') == "Running" ]] ; then
+         follow=1
+       fi
     else
       echo "Usage: kl {resource} {option}…"
       return 0
@@ -531,7 +535,7 @@ function k8s_log() {
   fi
 
   if [[ -f "$HOME/.bin/lj" ]] ; then
-    if [[ $@ =~ (-F|--follow) ]] ; then
+    if [[ $@ =~ (-F|--follow) || -n "$follow" ]] ; then
       kubectl logs "$resource" -f | lj $@
       return $?
     else
