@@ -96,6 +96,7 @@ alias llg="eza -l -a --git-repos"
 
 alias k="kubectl"
 alias kd="kubectl describe"
+alias ka="kubectl apply -f"
 
 # Custom functions
 alias hf="history_find"

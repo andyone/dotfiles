@@ -27,6 +27,7 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | `de …` | Docker `exec` shortcut |
 | `k …` | `kubectl` shortcut |
 | `kd …` | `kubectl describe` shortcut |
+| `ka …` | `kubectl apply -f` shortcut |
 | `kn {namespace}` | Set k8s namespace |
 | `kl {resource} {option}…` | View k8s resource logs |
 | `ks {pod}` | Connect to k8s pod |
