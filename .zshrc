@@ -67,6 +67,7 @@ export EDITOR="nano"
 export LANG="en_US.UTF-8"
 export TERM="xterm-256color"
 export COLORTERM="truecolor"
+export FZF_DEFAULT_OPTS='--reverse --prompt="→ " --height="30%"'
 
 # Go env
 export GOPROXY=direct
@@ -477,7 +478,7 @@ function k8s_namespace() {
 
   if [[ $# -eq 0 ]] ; then
     if [[ -f "$HOME/.bin/fzf" || -d "$HOME/.fzf" ]] ; then
-      ns=$(kubectl get ns | grep -vE '(kube|yandex)' | fzf --header-lines=1 --height 20% --reverse | awk '{print $1}')
+      ns=$(kubectl get ns | grep -vE '(kube|yandex)' | fzf --header-lines=1 --cycle --preview='kubectl describe ns {1}' | awk '{print $1}')
 
       if [[ -z "$ns" ]] ; then
         return 1
@@ -515,7 +516,7 @@ function k8s_log() {
 
   if [[ "${1:0:1}" == "-" || -z "$resource" ]] ; then
     if [[ -f "$HOME/.bin/fzf" || -d "$HOME/.fzf" ]] ; then
-      resource=$(kubectl get pods | fzf --header-lines=1 --height 20% --reverse | awk '{print $1}')
+      resource=$(kubectl get pods | fzf --header-lines=1 --cycle --preview='kubectl describe pod {1}' | awk '{print $1}')
 
       if [[ -z "$resource" ]] ; then
         return 1
@@ -554,7 +555,7 @@ function k8s_shell() {
 
   if [[ $# -eq 0 ]] ; then
     if [[ -f "$HOME/.bin/fzf" || -d "$HOME/.fzf" ]] ; then
-      pod=$(kubectl get pods --field-selector='status.phase=Running' | fzf --header-lines=1 --height 20% --reverse | awk '{print $1}')
+      pod=$(kubectl get pods --field-selector='status.phase=Running' | fzf --header-lines=1 --cycle --preview='kubectl describe pod {1}' | awk '{print $1}')
 
       if [[ -z "$pod" ]] ; then
         return 1
