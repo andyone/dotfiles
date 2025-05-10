@@ -427,7 +427,7 @@ function go_ci() {
     return 0
   fi
 
-  if ! command -v golangci-lint ; then
+  if ! command -v golangci-lint &> /dev/null ; then
     echo "golangci-lint is not installed"
     return 1
   fi
