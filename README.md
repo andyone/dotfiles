@@ -36,6 +36,7 @@ bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
 | `hf …` | `grep` over zsh history |
 | `goc` | Create HTML coverage report for Go sources |
 | `gcl {org}/{repo}` | Clone repository with Go sources |
+| `gci {path}` | Alias for `golangci-lint` |
 | `bkp {file}` | Create backup for file or directory |
 | `flat {file}` | Print flatten list of records |
 | `git release {version}` | Add signed version tag for the latest commit to the master branch |

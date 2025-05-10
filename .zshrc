@@ -105,6 +105,7 @@ alias txc="tmux_win_to_path"
 alias txn="rename_pane"
 alias goc="go_cover"
 alias gcl="go_clone"
+alias gci="go_ci"
 alias bkp="create_backup"
 alias ssht="ssh_multi"
 alias flat="cat_flat"
@@ -418,6 +419,25 @@ function go_clone() {
   popd &> /dev/null
 
   return 0
+}
+
+function go_ci() {
+  if [[ $# -eq 0 ]] ; then
+    echo "Usage: gci {path}"
+    return 0
+  fi
+
+  if ! command -v golangci-lint ; then
+    echo "golangci-lint is not installed"
+    return 1
+  fi
+
+  CGO_ENABLED=1 golangci-lint run \
+                --enable=nolintlint,gochecknoinits,bodyclose,gocritic \
+                --disable=errcheck \
+                "$@"
+
+  return $?
 }
 
 function create_backup() {
