@@ -446,6 +446,11 @@ function create_backup() {
     return 0
   fi
 
+  if [[ -e "$1.bak" ]] ; then
+    echo "Backup $1.bak already exist"
+    return 1
+  fi
+
   if ! cp -rp "$1" "$1.bak" ; then
     return 1
   fi
