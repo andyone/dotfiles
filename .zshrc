@@ -563,7 +563,7 @@ function k8s_log() {
 
   if [[ -f "$HOME/.bin/lj" ]] ; then
     if [[ $@ =~ (-F|--follow) || -n "$follow" ]] ; then
-      kubectl logs "$resource" -f | lj $@
+      kubectl logs "$resource" -f | lj -F $@
       return $?
     else
       kubectl logs "$resource" | lj $@
