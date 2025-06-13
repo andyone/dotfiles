@@ -5,7 +5,7 @@ A set of `zsh`, `git`, `tig`, and `tmux` configuration files.
 ### Installation
 
 ```
-bash <(curl -fsSL https://andy.one/dotfiles/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/andyone/dotfiles/master/install.sh)
 ```
 
 ### Extra commands
