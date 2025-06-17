@@ -85,7 +85,7 @@ export PATH=$HOME/.bin:/usr/local/bin:$PATH
 # Aliases
 alias sshk="ssh $SSH_QUIET_OPTS"
 alias scpk="scp $SSH_QUIET_OPTS"
-alias dl="curl -ZL --max-redirs 3 --parallel-max 5 --remote-name-all"
+alias dl="curl -ZL --max-redirs 3 --parallel-max 5 --remote-name-all --no-clobber"
 alias c="clear"
 alias g="grep --color=auto"
 alias e="$EDITOR"
