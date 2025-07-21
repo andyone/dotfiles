@@ -25,6 +25,10 @@ fi
 # Disable automatic oh-my-zsh update
 zstyle ':omz:update' mode disabled
 
+# Disable some useless features
+DISABLE_MAGIC_FUNCTIONS="true"
+DISABLE_COMPFIX="true"
+
 # Enable oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
@@ -625,6 +629,16 @@ function reset-prompt-and-accept-line {
 }
 
 zle -N accept-line reset-prompt-and-accept-line
+
+################################################################################
+
+autoload -Uz compinit
+
+if [[ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]] ; then
+  compinit
+else
+  compinit -C
+fi
 
 ################################################################################
 
