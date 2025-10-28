@@ -72,7 +72,7 @@ export LANG="en_GB.UTF-8"
 export LC_ALL="C.UTF-8"
 export TERM="xterm-256color"
 export COLORTERM="truecolor"
-export FZF_DEFAULT_OPTS='--reverse --prompt="→ " --height="30%"'
+export FZF_DEFAULT_OPTS='--reverse --prompt="→ " --height="30%" --color=pointer:#5FD7D7,hl:#5FD7D7,hl+:#FFAF00'
 
 # Go env
 export GOPROXY=direct
