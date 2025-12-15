@@ -7,6 +7,9 @@ umask 022
 # Path to your oh-my-zsh installation
 export ZSH=$HOME/.oh-my-zsh
 
+# Add local bin dir to PATH
+export PATH=$HOME/.bin:/usr/local/bin:$PATH
+
 # GPG always wants to know what TTY it's running on
 export GPG_TTY=$(tty)
 
@@ -17,8 +20,15 @@ ZSH_THEME="kaos"
 plugins=()
 
 # Enable fzf plugin if fzf is installed
-if [[ -d "$HOME/.fzf" ]] ; then
-  export PATH="$HOME/.fzf:$PATH"
+if [[ -f "$HOME/.bin/fzf" ]] ; then
+  export FZF_PATH="$HOME/.bin/fzf"
+  export FZF_BASE="$HOME/.fzf"
+
+  if [[ ! -d "$FZF_BASE" ]] ; then
+    mkdir "$FZF_BASE"
+    fzf --zsh > "$FZF_BASE/key-bindings.zsh"
+  fi
+
   plugins+=(fzf)
 fi
 
@@ -82,9 +92,6 @@ export CGO_ENABLED=0
 export GOPATH=~/projects/gocode
 export GOBIN=~/projects/gocode/bin
 export PATH=~/projects/gocode/bin:$PATH
-
-# Add local bin dir to PATH
-export PATH=$HOME/.bin:/usr/local/bin:$PATH
 
 # Aliases
 alias sshk="ssh $SSH_QUIET_OPTS"
